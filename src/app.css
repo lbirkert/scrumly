@@ -1,0 +1,65 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: black;
+    color: #ddd;
+    height: 100vh;
+    font-family: "Fira Mono", sans-serif;
+}
+
+h1, h2, h3, h4, h5 {
+    color: white;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+}
+
+form label {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2px;
+    font-size: 18px;
+    color: white;
+}
+
+button, input[type=submit] {
+    border: 1px solid white;
+    border-radius: 4px;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: white;
+    color: black;
+}
+
+input {
+    border: 1px solid white;
+    border-radius: 4px;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 18px;
+}
+
+input:focus {
+    outline: 2px solid cyan;
+    outline-offset: 2px;
+}
+
+.error {
+    color: red;
+}

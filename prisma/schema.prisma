@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Comment {
-  id        Int      @id
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   author    Member   @relation(fields: [memberId], references: [id])
   content   String
@@ -21,7 +21,8 @@ model Comment {
 }
 
 model Issue {
-  id          Int       @id
+  id          Int       @id @default(autoincrement())
+  localId     Int
   project     Project   @relation(fields: [projectId], references: [id])
   createdAt   DateTime  @default(now())
   closedAt    DateTime  @default(now())
@@ -36,7 +37,7 @@ model Issue {
 }
 
 model Project {
-  id        Int      @id
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   name      String
   members   Member[]
@@ -44,11 +45,11 @@ model Project {
 }
 
 model Member {
-  id        Int       @id
+  id        Int       @id @default(autoincrement())
   project   Project   @relation(fields: [projectId], references: [id])
   createdAt DateTime  @default(now())
   name      String
-  login     String @unique
+  login     String    @unique
   role      Int
   comments  Comment[]
   written   Issue[]   @relation("Author")
