@@ -22,10 +22,11 @@ model Comment {
 
 model Issue {
   id          Int       @id @default(autoincrement())
-  localId     Int
+  // TODO: add localId
+  //  localId     Int
   project     Project   @relation(fields: [projectId], references: [id])
   createdAt   DateTime  @default(now())
-  closedAt    DateTime  @default(now())
+  closedAt    DateTime?
   author      Member    @relation(fields: [authorId], references: [id], name: "Author")
   assignee    Member?   @relation(fields: [assigneeId], references: [id], name: "Assignee")
   title       String

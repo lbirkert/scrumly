@@ -10,7 +10,9 @@ export const load: PageServerLoad = (event) => {
         throw redirect(302, "/login"); 
     }
 
+    delete member.login;
+
     return {
-        member: makeSafe(member, publicMember)
+        member
     };
 };

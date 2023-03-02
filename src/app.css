@@ -45,7 +45,7 @@ button:hover {
     color: black;
 }
 
-input {
+input, textarea {
     border: 1px solid white;
     border-radius: 4px;
     background: transparent;
@@ -55,7 +55,7 @@ input {
     font-size: 18px;
 }
 
-input:focus {
+input:focus, textarea:focus {
     outline: 2px solid cyan;
     outline-offset: 2px;
 }

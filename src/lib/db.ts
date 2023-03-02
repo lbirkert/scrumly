@@ -12,14 +12,3 @@ export function generateLogin() {
 
     return result;
 }
-
-export function makeSafe(obj: any, fields: string[]) {
-    return Object.fromEntries(Object.entries(obj).filter(([k, _]) => fields.includes(k)));
-}
-
-export const publicMember = [
-    "name",
-    "project",
-    "createdAt",
-    "role",
-];
