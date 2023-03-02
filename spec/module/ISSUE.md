@@ -8,6 +8,7 @@ behaviour that occured. Contains [Issues](#issue).
 An [Issue](#issue) consists of
 
 - an author
+- an assignee (optional)
 - a title
 - a description
 
