@@ -48,7 +48,7 @@ model Member {
   project   Project   @relation(fields: [projectId], references: [id])
   createdAt DateTime  @default(now())
   name      String
-  login     String
+  login     String @unique
   role      Int
   comments  Comment[]
   written   Issue[]   @relation("Author")
