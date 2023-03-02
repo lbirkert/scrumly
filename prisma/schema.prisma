@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Comment {
+  id        Int      @id
+  createdAt DateTime @default(now())
+  author    Member   @relation(fields: [memberId], references: [id])
+  content   String
+  memberId  Int
+  Issue     Issue?   @relation(fields: [issueId], references: [id])
+  issueId   Int?
+}
+
+model Issue {
+  id          Int       @id
+  project     Project   @relation(fields: [projectId], references: [id])
+  createdAt   DateTime  @default(now())
+  closedAt    DateTime  @default(now())
+  author      Member    @relation(fields: [authorId], references: [id], name: "Author")
+  assignee    Member?   @relation(fields: [assigneeId], references: [id], name: "Assignee")
+  title       String
+  description String
+  comments    Comment[]
+  authorId    Int
+  assigneeId  Int?
+  projectId   Int
+}
+
+model Project {
+  id        Int      @id
+  createdAt DateTime @default(now())
+  name      String
+  members   Member[]
+  issues    Issue[]
+}
+
+model Member {
+  id        Int       @id
+  project   Project   @relation(fields: [projectId], references: [id])
+  createdAt DateTime  @default(now())
+  name      String
+  login     String
+  role      Int
+  comments  Comment[]
+  written   Issue[]   @relation("Author")
+  assigned  Issue[]   @relation("Assignee")
+
+  projectId Int
+}
