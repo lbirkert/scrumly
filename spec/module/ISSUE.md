@@ -9,7 +9,7 @@ An [Issue](#issue) consists of
 
 - an author
 - an assignee (optional)
-- a close date
+- a closedAt date
 - a title
 - a description
 
