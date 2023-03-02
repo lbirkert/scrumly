@@ -2,13 +2,13 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Fira Mono", sans-serif;
 }
 
 body {
     background: black;
     color: #ddd;
     height: 100vh;
-    font-family: "Fira Mono", sans-serif;
 }
 
 h1, h2, h3, h4, h5 {
