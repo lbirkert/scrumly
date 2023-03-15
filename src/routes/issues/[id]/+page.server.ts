@@ -52,25 +52,39 @@ export const actions: Actions = {
 
         // TODO: Check member permissions
         
-        const { content } = await form({"content": "string"} as const, request);
+        const { content, toggle } = await form({"content": "string", "toggle": "_string"} as const, request);
 
-        const { id } = await prisma.comment.create({
-            data: {
-                author: {
-                    connect: {
-                        id: member.id,
-                    },
-                },
-                issue: {
-                    connect: {
-                        id: issue.id
-                    },
-                },
-                content,
-            }
-        });
+        if(toggle !== undefined) {
+            await prisma.issue.updateMany({
+                data: { closedAt: issue.closedAt ? null : new Date() },
+                where: {
+                    id: issue.id,
+                    authorId: member.id,
+                }
+            });
+       
+            // TODO: Send system comment
 
-        throw redirect(301, `/issues/${params.id}#comment-${id}`);
+            throw redirect(301, `/issues/${params.id}`);
+        } else {
+            const { id } = await prisma.comment.create({
+                data: {
+                    author: {
+                        connect: {
+                            id: member.id,
+                        },
+                    },
+                    issue: {
+                        connect: {
+                            id: issue.id
+                        },
+                    },
+                    content,
+                }
+            });
+
+            throw redirect(301, `/issues/${params.id}#comment-${id}`);
+        }
     },
     comment_delete: async({ locals, params, request }) => {
         const member = guard(locals);
@@ -104,24 +118,5 @@ export const actions: Actions = {
         });
         
         throw redirect(301, `/issues/${params.id}#comment-${id}`);
-    },
-    toggle: async({ locals, params }) => {
-        const member = guard(locals);
-
-        const issue = await findIssue(params, member, undefined);
-
-        // TODO: Check member permissions
-        
-        await prisma.issue.updateMany({
-            data: { closedAt: issue.closedAt ? null : new Date() },
-            where: {
-                id: issue.id,
-                authorId: member.id,
-            }
-        });
-       
-        // TODO: Send system comment
-
-        throw redirect(301, `/issues/${params.id}`);
     },
 };

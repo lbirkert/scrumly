@@ -5,7 +5,6 @@
     import { enhance } from "$app/forms";
 
     import Comment from "$lib/Comment.svelte";
-    import Markdown from "$lib/Markdown.svelte";
 
     export let data: PageData;
 </script>
@@ -46,13 +45,15 @@
 
         <div>
             {#if data.issue.author.id === data.member.id}
-                <form method="POST" action="?/toggle" use:enhance>
                 {#if data.issue.closedAt}
-                    <button style="--color: white">Reopen Issue</button>
+                    <button style="--color: white" name="toggle" type="submit" formnovalidate="formnovalidate">
+                        Reopen Issue
+                    </button>
                 {:else}
-                    <button style="--color: magenta">Close Issue</button>
+                    <button style="--color: magenta" name="toggle" type="submit" formnovalidate="formnovalidate">
+                        Close Issue
+                    </button>
                 {/if}
-                </form>
             {/if}
             <button style="--color: lightgreen">Comment</button>
         </div>
