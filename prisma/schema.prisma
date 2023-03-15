@@ -30,7 +30,6 @@ model Issue {
   author      Member    @relation(fields: [authorId], references: [id], name: "Author")
   assignee    Member?   @relation(fields: [assigneeId], references: [id], name: "Assignee")
   title       String
-  description String
   comments    Comment[]
   authorId    Int
   assigneeId  Int?
