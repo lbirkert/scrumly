@@ -16,7 +16,7 @@ model Comment {
   author    Member   @relation(fields: [memberId], references: [id])
   content   String
   memberId  Int
-  Issue     Issue?   @relation(fields: [issueId], references: [id])
+  issue     Issue?   @relation(fields: [issueId], references: [id])
   issueId   Int?
 }
 

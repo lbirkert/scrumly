@@ -1,16 +1,11 @@
 import type { PageServerLoad } from "./$types";
 
-import { redirect } from "@sveltejs/kit";
-
-import { db } from "$lib/db";
-
+import { prisma } from "$lib/server/prisma";
+import { guard } from "$lib/server/guard";
+import { safeIssue, type SafeIssue } from "$lib/server/safe";
 
 export const load: PageServerLoad = async ({ locals, params }) => {
-    const member = locals.member;
-
-    if(!member) {
-        throw redirect(302, "/login");
-    }
+    const member = guard(locals);
 
     try {
         var page = parseInt((params as { page: string }).page) || 0
@@ -18,26 +13,25 @@ export const load: PageServerLoad = async ({ locals, params }) => {
         var page = 0
     }
     
-    const take = 10;
-
-    const issues = await db.issue.findMany({
+    const issues = await prisma.issue.findMany({
         where: {
             projectId: member.projectId,
         },
         include: {
             author: true,
             assignee: true,
+            comments: {
+                include: {
+                    author: true
+                }
+            },
         },
-        skip: take * page,
-        take,
+        skip: 10 * page,
+        take: 10,
     });
 
-    for(let issue of issues) {
-        delete issue.author.login;
-    }
-
     return {
-        issues,
+        issues: issues.map(safeIssue) as SafeIssue[],
         page,
     };
 };

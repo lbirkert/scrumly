@@ -2,7 +2,7 @@ import type { Handle } from "@sveltejs/kit";
 import { JWT_SECRET } from '$env/static/private';
 import jwt from "jsonwebtoken";
 
-import { db } from "$lib/db";
+import { prisma } from "$lib/server/prisma";
 
 export const handle: Handle = async ({ event, resolve }) => {
     const authCookie = event.cookies.get("Authorization");
@@ -16,11 +16,11 @@ export const handle: Handle = async ({ event, resolve }) => {
                 throw new Error("Something went wrong");
             }
 
-            event.locals.member = await db.member.findUnique({
+            event.locals.member = (await prisma.member.findUnique({
                 where: {
                     id: jwtMember.id,
                 },
-            });
+            }))!;
         } catch(error) {
             console.error(error);
         }

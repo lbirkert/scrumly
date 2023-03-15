@@ -1,18 +1,10 @@
 import type { PageServerLoad } from "./$types";
-import { redirect } from "@sveltejs/kit";
 
-import { makeSafe, publicMember } from "$lib/db";
+import { guard } from "$lib/server/guard";
+import { safeMember } from "$lib/server/safe";
 
 export const load: PageServerLoad = (event) => {
-    const member = event.locals.member;
-
-    if(!member) {
-        throw redirect(302, "/login"); 
-    }
-
-    delete member.login;
-
     return {
-        member
+        member: safeMember(guard(event.locals))
     };
 };

@@ -1,37 +1,33 @@
 import { JWT_SECRET, REGISTRATION_TOKEN } from '$env/static/private';
 
-import type { PageServerLoad, Actions } from "./$types";
+import type { Actions } from "./$types";
 import { fail } from "@sveltejs/kit";
 
 import jwt from "jsonwebtoken";
 
-import { generateLogin, db } from "$lib/db";
+import { secret } from "$lib/server/secret";
+import { prisma } from "$lib/server/prisma";
+import { form } from "$lib/server/form";
 
 export const actions: Actions = {
-    default: async (event) => {
-        const formData = Object.fromEntries(await event.request.formData());
+    default: async ({ request, cookies }) => {
+        const { token } = await form({ "token": "string" } as const, request);
 
-        if(!formData.token) {
-            return fail(400, {
-                error: "Missing token"
-            });
-        }
-
-        if(REGISTRATION_TOKEN && formData.token as string !== REGISTRATION_TOKEN) {
+        if(token !== REGISTRATION_TOKEN) {
             return fail(401, {
                 error: "Invalid token"
             });
         }
 
-        const login = generateLogin();
+        const login = secret();
 
-        const project = await db.project.create({
+        const project = await prisma.project.create({
             data: {
                 name: "Untitled",
             }
         });
 
-        const member = await db.member.create({
+        const member = await prisma.member.create({
             data: {
                 projectId: project.id,
                 name: "Anonymous",
@@ -40,11 +36,11 @@ export const actions: Actions = {
             }
         });
 
-        const token = jwt.sign({ id: member.id }, JWT_SECRET, {
+        const _token = jwt.sign({ id: member.id }, JWT_SECRET, {
             expiresIn: "1d",
         });
 
-        event.cookies.set('Authorization', `Bearer ${token}`, {
+        cookies.set('Authorization', `Bearer ${_token}`, {
 	    	httpOnly: true,
 	    	path: '/',
 	    	secure: true,

@@ -4,21 +4,14 @@ import { JWT_SECRET } from '$env/static/private';
 import { redirect, fail } from '@sveltejs/kit';
 import jwt from "jsonwebtoken";
 
-import { db } from "$lib/db";
+import { prisma } from "$lib/server/prisma";
+import { form } from "$lib/server/form";
 
 export const actions: Actions = {
-    default: async (event) => {
-        const formData = Object.fromEntries(await event.request.formData());
+    default: async ({ request, cookies }) => {
+        const { login } = await form({ "login": "string" } as const, request);
 
-        if(!formData.login) {
-            return fail(400, {
-                error: "Missing login"
-            });
-        }
-
-        const login = formData.login as string;
-
-        const member = await db.member.findUnique({
+        const member = await prisma.member.findUnique({
             where: { login },
         });
 
@@ -32,7 +25,7 @@ export const actions: Actions = {
             expiresIn: "1d",
         });
 
-        event.cookies.set('Authorization', `Bearer ${token}`, {
+        cookies.set('Authorization', `Bearer ${token}`, {
 		    httpOnly: true,
 		    path: '/',
 		    secure: true,
