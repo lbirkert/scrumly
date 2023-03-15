@@ -1,12 +1,5 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
-
-    import type { ActionData } from "./$types";
-    import { goto } from "$app/navigation";
-
-    export let form: ActionData;
-
-    $: if(form?.issue) goto("/issues");
 </script>
 
 <main>
@@ -23,9 +16,5 @@
 <style>
     main {
         padding: 5px;
-    }
-
-    textarea {
-        resize: vertical;
     }
 </style>

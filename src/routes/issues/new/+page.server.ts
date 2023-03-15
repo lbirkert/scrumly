@@ -4,6 +4,7 @@ import type { Actions } from "./$types";
 import { prisma } from "$lib/server/prisma";
 import { guard } from "$lib/server/guard";
 import { form } from "$lib/server/form";
+import { redirect } from "@sveltejs/kit";
 
 export const actions: Actions = {
     default: async ({ locals, request }) => {
@@ -13,7 +14,7 @@ export const actions: Actions = {
 
         const { title } = await form({"title": "string"} as const, request);
 
-        const issue = await prisma.issue.create({
+        const { id } = await prisma.issue.create({
             data: {
                 title,
                 projectId: member.projectId,
@@ -21,8 +22,6 @@ export const actions: Actions = {
             }
         });
 
-        return {
-            issue,
-        };
+        throw redirect(301, `/issues/${id}`);
     },
 };
