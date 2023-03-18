@@ -55,7 +55,7 @@
                 </form>
             {/if}
         </menu>
-        <pre><Markdown bind:source={comment.content} /></pre>
+        <span><Markdown bind:source={comment.content} /></span>
     {/if}
 </li>
 
@@ -113,9 +113,10 @@
         flex: 1;
     }
 
-    li > pre, li > form {
+    li > span, li > form {
         margin-top: 2px;
         padding: 10px 15px;
+        display: block;
     }
 
     menu button, menu .button {

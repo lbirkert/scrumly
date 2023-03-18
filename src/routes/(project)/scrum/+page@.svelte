@@ -68,6 +68,7 @@
 
     li {
         min-width: 400px;
+        flex: 1;
         border: 1px solid rgba(255, 255, 255, 0.3);
         border-radius: 10px;
         padding: 20px;

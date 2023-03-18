@@ -8,17 +8,25 @@ import { redirect } from "@sveltejs/kit";
 
 export const actions: Actions = {
     default: async ({ locals, request }) => {
-        const member = guard(locals);
+        const { member, project } = guard(locals);
         
         // TODO: check member permissions
 
-        const { title } = await form({"title": "string"} as const, request);
+        const { title, content } = await form({"title": "string", "content": "string"} as const, request);
 
         const { id } = await prisma.issue.create({
             data: {
                 title,
-                projectId: member.projectId,
+                projectId: project.id,
                 authorId: member.id,
+            }
+        });
+
+        await prisma.comment.create({
+            data: {
+                issueId: id,
+                content: content,
+                memberId: member.id,
             }
         });
 

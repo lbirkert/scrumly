@@ -20,6 +20,7 @@
     }
 </script>
 
+<main class="dialog">
 {#if form?.login}
     <form on:submit|preventDefault={onSubmit}>
         <h1>Memorize your password</h1>
@@ -40,3 +41,4 @@
         <button>Submit</button>
     </form>
 {/if}
+</main>

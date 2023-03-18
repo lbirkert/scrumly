@@ -6,4 +6,37 @@
     export let source: string;
 </script>
 
-<SvelteMarkdown bind:source renderers={{ html: HtmlRenderer, code: CodeRenderer }}/>
+<span><SvelteMarkdown bind:source renderers={{ html: HtmlRenderer, code: CodeRenderer }}/></span>
+
+<style>
+    span {
+        display: flex;
+        flex-direction: column;
+        row-gap: 15px;
+    }
+
+    span :global(p) {
+        overflow-wrap: break-word;
+        overflow: hidden;
+    }
+
+    span :global(h1) {
+        margin-bottom: 8px;
+    }
+    
+    span :global(h2) {
+        margin-bottom: 6px;
+    }
+
+    span :global(h3) {
+        margin-bottom: 4px;
+    }
+
+    span :global(h4) {
+        margin-bottom: 2px;
+    }
+
+    span :global(ul) {
+        list-style: inside;
+    }
+</style>

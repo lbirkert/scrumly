@@ -7,11 +7,13 @@
     import "prismjs/components/prism-git";
     import "prismjs/components/prism-javascript";
     import "prismjs/components/prism-jsx";
+    import "prismjs/components/prism-tsx";
     import "prismjs/components/prism-markdown";
     import "prismjs/components/prism-powershell";
     import "prismjs/components/prism-scss";
     import "prismjs/components/prism-c";
     import "prismjs/components/prism-cpp";
+    import "prismjs/components/prism-python";
 
     import "prism-themes/themes/prism-gruvbox-dark.css";
 
@@ -20,16 +22,28 @@
     
     let formatted: string;
 
-    $: if (prism.languages[lang]) {
-        formatted = (prism.highlight(text, prism.languages[lang], lang) as string)
+    const alias: Record<string, string> = {
+        "c++": "cpp",
+        "js": "jsx",
+        "ts": "tsx",
+        "sh": "bash",
+        "md": "markdown",
+        "py": "python",
+    };
+
+    $: {
+        const _lang = alias[lang] || lang;
+        if (prism.languages[_lang]) {
+            formatted = (prism.highlight(text, prism.languages[_lang], _lang) as string)
             .split("\n").map((l, i) => `<span class="line">${i}</span>${l}`).join("\n");
+        }
     }
 </script>
 
-<div><code>{#if formatted}{@html formatted}{:else}{text}{/if}</code></div>
+<pre><code>{#if formatted}{@html formatted}{:else}{text}{/if}</code></pre>
 
 <style>
-    div {
+    pre {
         padding: 15px 15px;
         background-color: #111;
         border-radius: 5px;

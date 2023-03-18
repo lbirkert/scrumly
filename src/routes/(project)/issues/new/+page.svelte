@@ -7,8 +7,9 @@
         <h1>Create Issue</h1>
         <label>
             Title
-            <input type="text" name="title"/>
+            <input type="text" name="title" required/>
         </label>
+        <textarea required name="content"/>
         <button>Create</button>
     </form>
 </main>
