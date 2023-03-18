@@ -4,4 +4,6 @@
     export let data: PageData;
 </script>
 
-<p>{data.member.name}</p>
+<main>
+    <p>{data.member.name}</p>
+</main>

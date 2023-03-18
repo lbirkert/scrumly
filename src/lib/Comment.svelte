@@ -55,16 +55,20 @@
                 </form>
             {/if}
         </menu>
-        <main>
-            <Markdown bind:source={comment.content} />
-        </main>
+        <pre><Markdown bind:source={comment.content} /></pre>
     {/if}
 </li>
 
 <style>
+    li > div {
+        position: absolute;
+        top: -60px;
+    }
+
     li {
         border: 1px solid rgba(255, 255, 255, 0.3);
         border-radius: 5px;
+        position: relative;
     }
 
     header {
@@ -72,7 +76,8 @@
         align-items: center;
         border-bottom: 1px solid rgba(255, 255, 255, 0.3);
         background-color: #111;
-        padding: 10px 20px;
+        padding: 10px;
+        font-size: 14px;
     }
 
     header > span {
@@ -108,9 +113,9 @@
         flex: 1;
     }
 
-    li > main, li > form {
-        padding: 20px;
-        margin-top: 10px;
+    li > pre, li > form {
+        margin-top: 2px;
+        padding: 10px 15px;
     }
 
     menu button, menu .button {

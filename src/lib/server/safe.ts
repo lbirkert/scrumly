@@ -1,53 +1,84 @@
-import type { Member, Issue, Comment } from "@prisma/client";
+import type { Member, Issue, Comment, Project } from "@prisma/client";
+
+export type SafeProject = {
+    id: number,
+    name: string,
+    members: SafeMember[],
+};
+
+export type InputProject = Project & {
+    members: Member[]
+};
+
+export function safeProject<T extends Partial<InputProject>>(
+    project?: T
+): T & SafeProject | undefined {
+    if(!project) return;
+
+    return {
+        id: project.id,
+        name: project.name,
+        members: project.members?.map(safeMember),
+    } as unknown as T & SafeProject;
+}
 
 export type SafeMember = {
     id: number,
     role: number,
     name: string,
     createdAt: Date,
-}
+    project: SafeProject,
+};
 
-export function safeMember(member: Member | null): SafeMember | null {
-    if(!member) return null;
+export type InputMember = Member & {
+    project: Project
+};
+
+export function safeMember<T extends Partial<InputMember>>(
+    member?: T
+): T & SafeMember | undefined {
+    if(!member) return;
 
     return {
         id: member.id,
         role: member.role,
         name: member.name,
         createdAt: member.createdAt,
-    };
+        project: safeProject(member.project),
+    } as T & SafeMember;
 }
 
 export type SafeIssue = {
     id: number,
     author: SafeMember,
-    assignee: SafeMember | null,
+    assignee?: SafeMember,
     title: string,
     description: string,
     createdAt: Date,
-    closedAt: Date | null,
+    closedAt?: Date,
     comments: SafeComment[],
 };
 
-export function safeIssue(
-    issue: Issue & {
-        author: Member,
-        assignee: Member | null,
-        comments: (Comment & { author: Member })[]
-    } | null
-): SafeIssue | null {
-    if(!issue) return null;
+export type InputIssue = Issue & {
+    author: Member,
+    assignee?: Member | null,
+    comments: (Comment & { author: Member })[]
+};
+
+export function safeIssue<T extends Partial<InputIssue>>(
+    issue?: T
+): T & SafeIssue | undefined {
+    if(!issue) return;
 
     return {
         id: issue.id,
-        author: safeMember(issue.author)!,
-        assignee: safeMember(issue.assignee),
+        author: safeMember(issue.author),
+        assignee: safeMember(issue.assignee ?? undefined),
         title: issue.title,
-        description: issue.description,
         createdAt: issue.createdAt,
         closedAt: issue.closedAt,
-        comments: issue.comments.map(safeComment) as SafeComment[],
-    };
+        comments: issue.comments?.map(safeComment),
+    } as unknown as T & SafeIssue;
 }
 
 export type SafeComment = {
@@ -57,13 +88,19 @@ export type SafeComment = {
     createdAt: Date,
 };
 
-export function safeComment(comment: Comment & { author: Member } | null): SafeComment | null {
-    if(!comment) return null;
+export type InputComment = Comment & {
+    author: Member
+};
+
+export function safeComment<T extends Partial<InputComment>>(
+    comment?: T
+): T & SafeComment | undefined {
+    if(!comment) return;
 
     return {
         id: comment.id,
-        author: safeMember(comment.author)!,
+        author: safeMember(comment.author),
         content: comment.content,
         createdAt: comment.createdAt,
-    };
+    } as T & SafeComment;
 }

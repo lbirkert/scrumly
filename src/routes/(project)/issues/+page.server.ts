@@ -5,7 +5,7 @@ import { guard } from "$lib/server/guard";
 import { safeIssue, type SafeIssue } from "$lib/server/safe";
 
 export const load: PageServerLoad = async ({ locals, params }) => {
-    const member = guard(locals);
+    const { project } = guard(locals);
 
     try {
         var page = parseInt((params as { page: string }).page) || 0
@@ -15,7 +15,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
     
     const issues = await prisma.issue.findMany({
         where: {
-            projectId: member.projectId,
+            projectId: project.id,
         },
         include: {
             author: true,
@@ -32,6 +32,6 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 
     return {
         issues: issues.map(safeIssue) as SafeIssue[],
-        page,
+        page
     };
 };

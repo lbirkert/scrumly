@@ -6,4 +6,4 @@
     export let source: string;
 </script>
 
-<pre><SvelteMarkdown bind:source renderers={{ html: HtmlRenderer, code: CodeRenderer }}/></pre>
+<SvelteMarkdown bind:source renderers={{ html: HtmlRenderer, code: CodeRenderer }}/>

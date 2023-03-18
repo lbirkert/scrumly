@@ -12,9 +12,3 @@
         <button>Create</button>
     </form>
 </main>
-
-<style>
-    main {
-        padding: 5px;
-    }
-</style>

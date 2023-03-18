@@ -1,11 +1,11 @@
-import type { Member } from "@prisma/client";
+import type { Member, Project } from "@prisma/client";
 
-import { redirect} from "@sveltejs/kit";
+import { redirect } from "@sveltejs/kit";
 
-export function guard(locals: { member: Member }): Member {
-    if(!locals.member) {
+export function guard(locals: { member?: Member, project?: Project }): { member: Member, project: Project } {
+    if(!locals.member || !locals.project) {
         throw redirect(302, "/login");
     }
 
-    return locals.member;
+    return locals as { member: Member, project: Project };
 }

@@ -4,6 +4,8 @@
 
     import { enhance } from "$app/forms";
 
+    import { page } from "$app/stores";
+
     import Comment from "$lib/Comment.svelte";
 
     export let data: PageData;
@@ -32,7 +34,7 @@
     {#if data.issue.comments.length !== 0}
         <ul>
             {#each data.issue.comments as comment}
-                <Comment bind:comment member={data.member} edit={data.edit === comment.id.toString()} />
+                <Comment bind:comment member={data.member} edit={$page.url.searchParams.get("edit") === comment.id.toString()} />
             {/each}
         </ul>
 
@@ -46,11 +48,11 @@
         <div>
             {#if data.issue.author.id === data.member.id}
                 {#if data.issue.closedAt}
-                    <button style="--color: white" name="toggle" type="submit" formnovalidate="formnovalidate">
+                    <button style="--color: white" name="toggle" type="submit" formnovalidate>
                         Reopen Issue
                     </button>
                 {:else}
-                    <button style="--color: magenta" name="toggle" type="submit" formnovalidate="formnovalidate">
+                    <button style="--color: magenta" name="toggle" type="submit" formnovalidate>
                         Close Issue
                     </button>
                 {/if}
@@ -61,36 +63,33 @@
 </main>
 
 <style>
-    main {
-        padding: 20px;
-    }
-
-    main > header {
+    header {
         margin-bottom: 30px;
     }
 
-    main > header > h1 {
+    header > h1 {
         display: flex;
         align-items: center;
         column-gap: 20px;
         margin-bottom: 5px;
     }
 
-    main > header > span {
+    header > span {
         display: inline-block;
         margin-bottom: 20px;
     }
 
-    main > form {
+    form {
         margin-top: 40px;
     }
 
-    main > form > div {
+    form > div {
         display: flex;
+        justify-content: end;
         column-gap: 10px;
     }
 
-    main > ul {
+    ul {
         list-style: none;
         display: flex;
         flex-direction: column;

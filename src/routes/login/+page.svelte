@@ -6,30 +6,24 @@
     export let form: ActionData;
 </script>
 
-<main>
+<main class="dialog">
     <form method="POST" use:enhance>
         <h1>Login</h1>
         <p>Please enter your login secret to continue</p>
-    <label>
-        Secret
-        <input type="password" name="login" />
-    </label>
-
-    {#if form?.error}
-        <span class="error">{form.error}</span>
-    {/if}
-
-    <button>Login</button>
-</form>
+        <label>
+            Secret
+            <input type="password" name="login" />
+        </label>
+    
+        {#if form?.error}
+            <span class="error">{form.error}</span>
+        {/if}
+    
+        <button>Login</button>
+    </form>
 </main>
 
 <style>
-    main {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-    }
 
     p {
         margin-bottom: 20px;

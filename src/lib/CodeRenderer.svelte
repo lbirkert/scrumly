@@ -34,6 +34,7 @@
         background-color: #111;
         border-radius: 5px;
         border: 1px solid rgba(255, 255, 255, 0.3);
+        overflow-x: scroll;
     }
 
     code :global(span.line) {

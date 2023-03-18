@@ -1,14 +1,21 @@
 <script lang="ts">
+    import { page } from "$app/stores";
+
     import type { PageData } from "./$types";
 
     export let data: PageData;
 </script>
 
 <main>
-    <a class="new" href="/issues/new">
-        <button>New</button>
-    </a>
-
+    <header>
+        <form>
+            <input name="q" placeholder="Search" value={$page.url.searchParams.get("q") || "is:open"}/>
+        </form>
+        <a class="button" style="--color: lightgreen" href="/issues/new">
+            New
+        </a>
+    </header>
+    
     <ul>
         <div/>
         {#each data.issues as issue, i}
@@ -33,20 +40,17 @@
 </main>
 
 <style>
-    main {
-        padding: 20px;
+    header {
+        margin-bottom: 10px;
+        display: flex;
+        column-gap: 10px;
     }
 
-    .new button {
-        border-color: lightgreen;
-    }
-
-    .new button:hover {
-        background-color: lightgreen;
+    header > form {
+        width: 100%;
     }
 
     ul {
-        list-style: none; 
         display: flex;
         flex-direction: column;
         row-gap: 20px;

@@ -1,8 +1,10 @@
 import { redirect } from "@sveltejs/kit";
-import type { PageServerLoad } from "./$types";
+import type { Actions } from "./$types";
+    
+export const actions: Actions = {
+    default: ({ cookies }) => {
+        cookies.delete("Authorization");
 
-export const load: PageServerLoad = (event) => {
-    event.cookies.delete("Authorization");
-
-    throw redirect(302, "/login");
+        throw redirect(302, "/login");
+    },
 };

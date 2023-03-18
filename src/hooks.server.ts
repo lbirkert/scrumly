@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 
 import { prisma } from "$lib/server/prisma";
 
+import type { Project, Member } from "@prisma/client";
+
 export const handle: Handle = async ({ event, resolve }) => {
     const authCookie = event.cookies.get("Authorization");
 
@@ -16,11 +18,20 @@ export const handle: Handle = async ({ event, resolve }) => {
                 throw new Error("Something went wrong");
             }
 
-            event.locals.member = (await prisma.member.findUnique({
+            let member = (await prisma.member.findUnique({
                 where: {
                     id: jwtMember.id,
                 },
-            }))!;
+                include: {
+                    project: true,
+                }
+            })) as Member & { project?: Project };
+
+            event.locals.project = member.project;
+            
+            delete member.project;
+
+            event.locals.member = member;
         } catch(error) {
             console.error(error);
         }
