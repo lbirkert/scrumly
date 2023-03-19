@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { PageData } from "./$types";
-    import { sinceShort } from "$lib/date";
+    import { SinceShort } from "$lib/date";
+    import { Member } from "$lib/member";
 
     import { enhance } from "$app/forms";
 
@@ -22,10 +23,8 @@
             {data.issue.title}
         </h1>
         <span>
-            #{data.issue.id} opened {sinceShort(data.issue.createdAt)} by 
-            <a href="/users/{data.issue.author.id}">
-                {data.issue.author.name}
-            </a>
+            #{data.issue.id} opened <SinceShort date={data.issue.createdAt}/> by 
+            <Member member={data.issue.author}/>
         </span>
     </header>
     

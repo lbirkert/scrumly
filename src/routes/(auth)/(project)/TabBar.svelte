@@ -31,8 +31,8 @@
             name: "Issues",
         },
         {
-            pathname: "/users",
-            name: "Users",
+            pathname: "/members",
+            name: "Members",
         },
     ];
 </script>

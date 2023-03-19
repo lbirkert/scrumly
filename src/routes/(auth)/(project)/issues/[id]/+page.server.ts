@@ -5,7 +5,6 @@ import { error, redirect } from "@sveltejs/kit";
 import type { Project, Prisma } from "@prisma/client";
 
 import { prisma } from "$lib/server/prisma";
-import { guard } from "$lib/server/guard";
 import { form } from "$lib/server/form";
 import { safeIssue } from "$lib/server/safe";
 
@@ -36,7 +35,7 @@ async function findIssue<T extends Prisma.IssueInclude | undefined>(
 }
 
 export const load: PageServerLoad = async ({ locals, params }) => {
-    const { project } = guard(locals);
+    const { project } = locals;
 
     return {
         issue: safeIssue(await findIssue(params, project, {
@@ -45,9 +44,12 @@ export const load: PageServerLoad = async ({ locals, params }) => {
     };
 };
 
+// Since all actions redirect, we'll replace using 
+// custom +server.ts and switch to http methods for
+// action separation
 export const actions: Actions = {
     comment: async ({ locals, params, request }) => {
-        const { project, member } = guard(locals);
+        const { project, member } = locals;
 
         const issue = await findIssue(params, project, undefined);
 
@@ -60,7 +62,7 @@ export const actions: Actions = {
                 data: { closedAt: issue.closedAt ? null : new Date() },
                 where: {
                     id: issue.id,
-                    authorId: member.id,
+                    authorId: member!.id,
                 }
             });
        
@@ -72,7 +74,7 @@ export const actions: Actions = {
                 data: {
                     author: {
                         connect: {
-                            id: member.id,
+                            id: member!.id,
                         },
                     },
                     issue: {
@@ -88,7 +90,7 @@ export const actions: Actions = {
         }
     },
     comment_delete: async({ locals, params, request }) => {
-        const { member } = guard(locals);
+        const { member } = locals;
 
         // TODO: Check member permissions
         
@@ -97,14 +99,14 @@ export const actions: Actions = {
         await prisma.comment.deleteMany({
             where: {
                 id: id,
-                memberId: member.id,
+                memberId: member!.id,
             },
         });
         
         throw redirect(301, `/issues/${params.id}`);
     },
     comment_update: async({ locals, params, request }) => {
-        const { member } = guard(locals);
+        const { member } = locals;
 
         // TODO: Check member permissions
         
@@ -114,7 +116,7 @@ export const actions: Actions = {
             data: { content },
             where: {
                 id: id,
-                memberId: member.id,
+                memberId: member!.id,
             },
         });
         

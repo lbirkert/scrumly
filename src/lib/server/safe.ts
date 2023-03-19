@@ -28,6 +28,7 @@ export type SafeMember = {
     name: string,
     createdAt: Date,
     project: SafeProject,
+    avatar: string,
 };
 
 export type InputMember = Member & {
@@ -45,6 +46,7 @@ export function safeMember<T extends Partial<InputMember>>(
         name: member.name,
         createdAt: member.createdAt,
         project: safeProject(member.project),
+        avatar: member.avatar,
     } as T & SafeMember;
 }
 

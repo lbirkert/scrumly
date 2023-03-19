@@ -50,6 +50,7 @@ model Member {
   createdAt DateTime  @default(now())
   name      String
   login     String    @unique
+  avatar    String
   role      Int
   comments  Comment[]
   written   Issue[]   @relation("Author")

@@ -1,11 +1,10 @@
 import type { PageServerLoad } from "./$types";
 
 import { prisma } from "$lib/server/prisma";
-import { guard } from "$lib/server/guard";
 import { safeIssue, type SafeIssue } from "$lib/server/safe";
 
 export const load: PageServerLoad = async ({ locals, params }) => {
-    const { project } = guard(locals);
+    const { project } = locals;
 
     try {
         var page = parseInt((params as { page: string }).page) || 0

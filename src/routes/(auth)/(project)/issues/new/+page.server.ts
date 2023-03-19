@@ -2,13 +2,12 @@
 import type { Actions } from "./$types";
 
 import { prisma } from "$lib/server/prisma";
-import { guard } from "$lib/server/guard";
 import { form } from "$lib/server/form";
 import { redirect } from "@sveltejs/kit";
 
 export const actions: Actions = {
     default: async ({ locals, request }) => {
-        const { member, project } = guard(locals);
+        const { member, project } = locals;
         
         // TODO: check member permissions
 
@@ -18,7 +17,7 @@ export const actions: Actions = {
             data: {
                 title,
                 projectId: project.id,
-                authorId: member.id,
+                authorId: member!.id,
             }
         });
 
@@ -26,7 +25,7 @@ export const actions: Actions = {
             data: {
                 issueId: id,
                 content: content,
-                memberId: member.id,
+                memberId: member!.id,
             }
         });
 

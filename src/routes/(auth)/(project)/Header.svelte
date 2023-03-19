@@ -1,7 +1,7 @@
 <script lang="ts">
     import TabBar from "./TabBar.svelte";
 
-    import type { SafeMember } from "$lib/server/safe";
+    import { Member, type SafeMember } from "$lib/member";
 
     export let member: SafeMember;
 </script>
@@ -10,7 +10,7 @@
     <form action="/logout" method="POST">
         <p>
             Logged in as 
-            <a href="/users/{member.id}">{member.name}</a>
+            <Member {member}/>
         </p>
         <button>Logout</button>
     </form>
@@ -25,5 +25,12 @@
         align-items: center;
         column-gap: 20px;
         padding: 20px 0;
+    }
+
+    p {
+        text-align: center;
+        display: inline-flex;
+        align-items: center;
+        column-gap: 10px;
     }
 </style>

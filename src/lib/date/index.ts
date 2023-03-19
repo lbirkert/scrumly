@@ -28,3 +28,7 @@ export function sinceShort(date: Date) {
         return seconds === 1 ? "1 second ago" : `${seconds} seconds ago`;
     } else return "now";
 }
+
+import SinceShort from "./SinceShort.svelte";
+
+export { SinceShort };

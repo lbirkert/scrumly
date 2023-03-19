@@ -3,21 +3,20 @@
 
     import type { PageData } from "./$types";
 
+    import { SinceShort } from "$lib/date";
+
     export let data: PageData;
 </script>
 
 <main>
-    <header>
-        <form>
-            <input name="q" placeholder="Search" value={$page.url.searchParams.get("q") || "is:open"}/>
-        </form>
+    <form>
+        <input name="q" placeholder="Search" value={$page.url.searchParams.get("q") || "is:open"}/>
         <a class="button" style="--color: lightgreen" href="/issues/new">
             New
         </a>
-    </header>
+    </form>
     
     <ul>
-        <div/>
         {#each data.issues as issue, i}
             {#if i != 0}
                 <li class="spacer"/>
@@ -31,7 +30,11 @@
                     {/if}
                     <div>
                         <h2>{issue.title}</h2>
-                        <span>#{issue.id} opened on {issue.createdAt.toLocaleDateString("en-US")} by {issue.author.name}</span>
+                        <span>
+                            #{issue.id} 
+                            opened <SinceShort date={issue.createdAt} /> by
+                            {issue.author.name}
+                        </span>
                     </div>
                 </a>
             </li>
@@ -40,14 +43,14 @@
 </main>
 
 <style>
-    header {
-        margin-bottom: 10px;
-        display: flex;
+    form {
+        flex-direction: row;
         column-gap: 10px;
+        margin-bottom: 40px;
     }
 
-    header > form {
-        width: 100%;
+    form > input {
+        flex: 1;
     }
 
     ul {

@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { SafeIssue } from "$lib/server/safe";
-    import { sinceShort } from "$lib/date";
+    import { SinceShort } from "$lib/date";
+    import { Member } from "$lib/member";
 
     export let id: number;
     export let name: string;
@@ -20,25 +21,21 @@
             <li class="spacer"/>
         {/if}
         <li on:dragstart={() => (dragIssue = i, dragFirst = id)} draggable={true}>
-            {#if issue.closedAt}
-                <span class="close">-</span>
-            {:else}
-                <span class="open">+</span>
-            {/if}
-            <div>
-                <h4>
-                    {issue.title}
-                </h4>
-                <span>
-                    <a href="/issues/{issue.id}" class="issue">
-                        #{issue.id}
-                    </a>
-                    opened {sinceShort(issue.createdAt)} by
-                    <a href="/users/{issue.author.id}">
-                        {issue.author.name}
-                    </a>
-                </span>
-            </div>
+            <h4>
+                {#if issue.closedAt}
+                    <span class="close">-</span>
+                {:else}
+                    <span class="open">+</span>
+                {/if}
+                {issue.title}
+            </h4>
+            <span>
+                <a href="/issues/{issue.id}" class="issue">
+                    #{issue.id}
+                </a>
+                opened <SinceShort date={issue.createdAt}/> by
+                <Member member={issue.author} />
+            </span>
         </li>
     {/each}
 </ul>
@@ -57,17 +54,18 @@
     }
 
     li {
-        display: flex;
-        column-gap: 20px;
         cursor: pointer;
         user-select: none;
     }
 
-    li > div > span {
+    li > span {
         font-size: 14px;
     }
 
     h4 {
         margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+        column-gap: 10px;
     }
 </style>

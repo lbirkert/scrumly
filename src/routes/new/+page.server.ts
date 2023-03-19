@@ -1,4 +1,4 @@
-import { JWT_SECRET, REGISTRATION_TOKEN } from '$env/static/private';
+import { JWT_SECRET, REGISTRATION_TOKEN, AVATARS_DIR } from '$env/static/private';
 
 import type { Actions } from "./$types";
 import { fail } from "@sveltejs/kit";
@@ -8,6 +8,7 @@ import jwt from "jsonwebtoken";
 import { secret } from "$lib/server/secret";
 import { prisma } from "$lib/server/prisma";
 import { form } from "$lib/server/form";
+import { generateAvatar } from "$lib/server/avatar";
 
 export const actions: Actions = {
     default: async ({ request, cookies }) => {
@@ -21,6 +22,9 @@ export const actions: Actions = {
 
         const login = secret();
 
+        // Generate default avatar
+        const avatar = generateAvatar();
+
         const project = await prisma.project.create({
             data: {
                 name: "Untitled",
@@ -32,6 +36,7 @@ export const actions: Actions = {
                 projectId: project.id,
                 name: "Anonymous",
                 role: 0,
+                avatar,
                 login 
             }
         });

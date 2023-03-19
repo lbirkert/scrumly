@@ -1,6 +1,5 @@
 import type { PageServerLoad, Actions } from "./$types";
 
-import { guard } from "$lib/server/guard";
 import { form } from "$lib/server/form";
 import { safeMember, safeProject, safeIssue, type SafeIssue } from "$lib/server/safe";
 import { prisma } from "$lib/server/prisma";
@@ -9,11 +8,11 @@ import { error } from "@sveltejs/kit";
 
 
 export const load: PageServerLoad = async ({ locals }) => {
-    const { member, project } = guard(locals);
+    const { member, project } = locals;
 
     const issues = await prisma.issue.findMany({
         where: {
-            projectId: member.projectId,
+            projectId: member!.projectId,
         },
         include: {
             author: true,
@@ -35,12 +34,12 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 export const actions: Actions = {
     default: async ({ request, locals }) => {
-        const { member } = guard(locals);
+        const { member } = locals;
         const { id, to } = await form({ "id": "number", "to": "number" } as const, request);
 
         const issue = await prisma.issue.findUnique({ where: { id } });
 
-        if(!issue || issue.projectId != member.projectId) throw error(404, "Not found");
+        if(!issue || issue.projectId != member!.projectId) throw error(404, "Not found");
 
         // TODO: check member permissions
         

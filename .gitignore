@@ -13,3 +13,4 @@ vite.config.ts.timestamp-*
 *-lock.*
 *.db
 *.db-journal
+run/

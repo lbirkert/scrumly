@@ -2,9 +2,11 @@
     import type { SafeComment, SafeMember } from "$lib/server/safe";
     import { sinceShort } from "$lib/date";
 
-    import Markdown from "$lib/Markdown.svelte";
-
     import { enhance } from "$app/forms";
+
+    import { Member } from "$lib/member";
+    import { Markdown } from "$lib/markdown";
+
 
     export let comment: SafeComment;
     export let member: SafeMember;
@@ -32,9 +34,7 @@
     {:else}
         <header>
             <span>
-                <a href="/users/{comment.author.id}">
-                    {comment.author.name}
-                </a>
+                <Member member={comment.author} />
                 commented 
                 <a title={comment.createdAt.toString()} href="#comment-{comment.id}">
                     {sinceShort(comment.createdAt)}
@@ -81,7 +81,9 @@
     }
 
     header > span {
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
+        column-gap: 5px;
         width: 100%;
     }
 
