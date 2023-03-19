@@ -21,27 +21,36 @@ model Comment {
 }
 
 model Issue {
-  id          Int       @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   // TODO: add localId
   //  localId     Int
-  project     Project   @relation(fields: [projectId], references: [id])
-  createdAt   DateTime  @default(now())
-  closedAt    DateTime?
-  author      Member    @relation(fields: [authorId], references: [id], name: "Author")
-  assignee    Member?   @relation(fields: [assigneeId], references: [id], name: "Assignee")
-  title       String
-  comments    Comment[]
-  authorId    Int
-  assigneeId  Int?
-  projectId   Int
+  project    Project   @relation(fields: [projectId], references: [id])
+  createdAt  DateTime  @default(now())
+  closedAt   DateTime?
+  author     Member    @relation(fields: [authorId], references: [id], name: "Author")
+  assignee   Member?   @relation(fields: [assigneeId], references: [id], name: "Assignee")
+  title      String
+  comments   Comment[]
+  authorId   Int
+  assigneeId Int?
+  projectId  Int
 }
 
 model Project {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  name      String
-  members   Member[]
-  issues    Issue[]
+  id          Int          @id @default(autoincrement())
+  createdAt   DateTime     @default(now())
+  name        String
+  members     Member[]
+  issues      Issue[]
+  invitations Invitation[]
+}
+
+model Invitation {
+  id        String  @id
+  project   Project @relation(fields: [projectId], references: [id])
+  creator   Member  @relation(fields: [creatorId], references: [id])
+  creatorId Int
+  projectId Int
 }
 
 model Member {
@@ -56,5 +65,6 @@ model Member {
   written   Issue[]   @relation("Author")
   assigned  Issue[]   @relation("Assignee")
 
-  projectId Int
+  projectId  Int
+  Invitation Invitation[]
 }
