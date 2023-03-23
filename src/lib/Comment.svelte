@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { SafeComment, SafeMember } from '$lib/server/safe';
 	import { sinceShort } from '$lib/date';
-	import { page } from "$app/stores";
+	import { page } from '$app/stores';
 
 	import { enhance } from '$app/forms';
 
@@ -13,7 +13,9 @@
 	export let edit: boolean;
 
 	function copy() {
-		navigator.clipboard.writeText(new URL(`#comment-${comment.id.toString()}`, $page.url).toString());
+		navigator.clipboard.writeText(
+			new URL(`#comment-${comment.id.toString()}`, $page.url).toString()
+		);
 	}
 </script>
 

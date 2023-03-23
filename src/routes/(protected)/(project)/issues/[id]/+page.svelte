@@ -63,26 +63,26 @@
 			<button style="--color: lightgreen">Comment</button>
 		</div>
 	</form>
-	
+
 	<div class="spacer" />
-	
+
 	<form method="POST" use:enhance>
 		<h3>Assignee</h3>
 		{#if data.issue.assignee}
-			<Member member={data.issue.assignee}/>
+			<Member member={data.issue.assignee} />
 		{:else}
 			<span>None</span>
 		{/if}
 
 		<span style="margin-top: 30px">
-		{#if data.issue.assignee?.id === data.member.id}
-			<button style="--color: white" formaction="?/assign">Unassign</button>
-		{:else}
-			<button style="--color: white" formaction="?/assign">Assign to yourself</button>
-		{/if}
+			{#if data.issue.assignee?.id === data.member.id}
+				<button style="--color: white" formaction="?/assign">Unassign</button>
+			{:else}
+				<button style="--color: white" formaction="?/assign">Assign to yourself</button>
+			{/if}
 		</span>
 		<span>
-		<button style="--color: lightcoral" formaction="?/delete">Delete</button>
+			<button style="--color: lightcoral" formaction="?/delete">Delete</button>
 		</span>
 	</form>
 </main>

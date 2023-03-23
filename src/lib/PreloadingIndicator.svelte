@@ -1,7 +1,6 @@
 <!-- Sourced from https://github.com/sveltejs/sites/blob/master/packages/site-kit/src/lib/components/PreloadingIndicator.svelte -->
-
 <script lang="ts">
-    import { onMount } from "svelte";
+	import { onMount } from 'svelte';
 
 	let p = 0;
 	let visible = false;
@@ -18,12 +17,12 @@
 
 {#if visible}
 	<div class="progress">
-        <div style="width: {p * 100}%"/>
+		<div style="width: {p * 100}%" />
 	</div>
 {/if}
 
 {#if p >= 0.4}
-	<div class="fade"></div>
+	<div class="fade" />
 {/if}
 
 <style>
@@ -47,14 +46,17 @@
 		position: fixed;
 		width: 100%;
 		height: 100%;
-		background-color: rgba(255,255,255,0.3);
+		background-color: rgba(255, 255, 255, 0.3);
 		pointer-events: none;
 		z-index: 998;
 		animation: fade 0.4s;
 	}
 	@keyframes fade {
-		from { opacity: 0 }
-		to { opacity: 1 }
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
 	}
 </style>
-

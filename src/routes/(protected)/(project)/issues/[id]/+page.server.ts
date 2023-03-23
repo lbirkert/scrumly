@@ -138,12 +138,12 @@ export const actions: Actions = {
 
 		await prisma.issue.update({
 			data: { assigneeId: issue.assigneeId === member!.id ? null : member!.id },
-			where: { id: issue.id },
+			where: { id: issue.id }
 		});
 	},
 	async delete({ locals, params }) {
 		const { project } = locals;
-		
+
 		// TODO: Check member permissions
 		const issue = await findIssue(params, project, undefined);
 
@@ -151,6 +151,6 @@ export const actions: Actions = {
 			where: { id: issue.id }
 		});
 
-		throw redirect(302, "/issues");
-	},
+		throw redirect(302, '/issues');
+	}
 };

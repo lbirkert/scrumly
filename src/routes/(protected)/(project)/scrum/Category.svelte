@@ -39,7 +39,7 @@
 			{#if issue.assignee}
 				<span>
 					Assigned to
-					<Member member={issue.assignee}/>
+					<Member member={issue.assignee} />
 				</span>
 			{/if}
 		</li>

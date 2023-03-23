@@ -3,7 +3,7 @@
 
 	import { Avatar } from '$lib/member';
 
-	import { enhance } from "$app/forms";
+	import { enhance } from '$app/forms';
 
 	export let data: PageData;
 </script>
@@ -18,9 +18,8 @@
 		<button style="--color: lightblue">Update</button>
 
 		<div class="spacer" />
-	</form>	
+	</form>
 	<form method="POST" action="?/member" use:enhance>
-
 		<h2>Member Settings</h2>
 		<Avatar size="l" member={data.member} />
 		<label>
