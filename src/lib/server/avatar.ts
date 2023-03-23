@@ -1,4 +1,4 @@
-import jdenticon from 'jdenticon';
+import * as jdenticon from 'jdenticon';
 import { writeFile, readFile } from 'fs/promises';
 import { AVATARS_DIR } from '$env/static/private';
 import { secret } from '$lib/server/secret';
