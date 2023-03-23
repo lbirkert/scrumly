@@ -1,10 +1,10 @@
-import { redirect } from "@sveltejs/kit";
-import type { Actions } from "./$types";
-    
-export const actions: Actions = {
-    default: ({ cookies }) => {
-        cookies.delete("Authorization");
+import { redirect } from '@sveltejs/kit';
+import type { Actions } from './$types';
 
-        throw redirect(302, "/login");
-    },
+export const actions: Actions = {
+	default: ({ cookies }) => {
+		cookies.delete('Authorization');
+
+		throw redirect(302, '/login');
+	}
 };

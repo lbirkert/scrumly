@@ -1,43 +1,42 @@
 <script lang="ts">
-    import type { ActionData } from "./$types";
+	import type { ActionData } from './$types';
 
-    import { enhance } from "$app/forms";
+	import { enhance } from '$app/forms';
 
-    export let form: ActionData;
+	export let form: ActionData;
 </script>
 
 <main class="dialog">
-    <form method="POST" use:enhance>
-        <h1>Login</h1>
-        <p>Please enter your login secret to continue</p>
-        <label>
-            Secret
-            <input type="password" name="login" />
-        </label>
-    
-        {#if form?.error}
-            <span class="error">{form.error}</span>
-        {/if}
-    
-        <button>Login</button>
-    </form>
+	<form method="POST" use:enhance>
+		<h1>Login</h1>
+		<p>Please enter your login secret to continue</p>
+		<label>
+			Secret
+			<input type="password" name="login" />
+		</label>
+
+		{#if form?.error}
+			<span class="error">{form.error}</span>
+		{/if}
+
+		<button>Login</button>
+	</form>
 </main>
 
 <style>
+	p {
+		margin-bottom: 20px;
+	}
 
-    p {
-        margin-bottom: 20px;
-    }
+	form {
+		max-width: 500px;
+	}
 
-    form {
-        max-width: 500px;
-    }
+	label {
+		row-gap: 10px;
+	}
 
-    label {
-        row-gap: 10px;
-    }
-
-    button {
-        margin-top: 20px;
-    }
+	button {
+		margin-top: 20px;
+	}
 </style>

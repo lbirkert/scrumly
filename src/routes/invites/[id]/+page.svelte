@@ -1,10 +1,11 @@
 <script lang="ts">
-	import type { ActionData } from './$types';
-
-	import { browser } from '$app/environment';
+	import type { PageData, ActionData } from './$types';
+	import { Avatar } from '$lib/member';
 	import { enhance } from '$app/forms';
+	import { browser } from '$app/environment';
 
 	export let form: ActionData;
+	export let data: PageData;
 
 	$: if (browser && form?.login) {
 		window.onbeforeunload = (e) => {
@@ -23,12 +24,12 @@
 			<button>Continue</button>
 		</form>
 	{:else}
-		<form method="POST" use:enhance>
-			<h1>Create a project</h1>
-			<label>
-				Registration token
-				<input type="password" name="token" required />
-			</label>
+		<form method="POST" action="?/accept" use:enhance>
+			<h1>Invitation</h1>
+			<p>
+				<Avatar member={data.invite.creator} />
+				{data.invite.creator.name} invited you to join {data.invite.project.name}
+			</p>
 			<label>
 				Name
 				<input name="name" required />
@@ -36,7 +37,7 @@
 			{#if form?.error}
 				<span class="error">{form.error}</span>
 			{/if}
-			<button>Submit</button>
+			<button>Accept</button>
 		</form>
 	{/if}
 </main>

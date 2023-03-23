@@ -1,0 +1,36 @@
+<script lang="ts">
+	import TabBar from './TabBar.svelte';
+
+	import { Member, type SafeMember } from '$lib/member';
+
+	export let member: SafeMember;
+</script>
+
+<header>
+	<form action="/logout" method="POST">
+		<p>
+			Logged in as
+			<Member {member} />
+		</p>
+		<button style="--color: lightcoral">Logout</button>
+	</form>
+</header>
+
+<TabBar />
+
+<style>
+	form {
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		column-gap: 20px;
+		padding: 20px 0;
+	}
+
+	p {
+		text-align: center;
+		display: inline-flex;
+		align-items: center;
+		column-gap: 10px;
+	}
+</style>
