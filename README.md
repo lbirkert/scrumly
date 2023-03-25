@@ -35,7 +35,7 @@ _NOTE: Use github and others if you can_
 
 ### Docker
 
-Soon &tm;
+Soon &trade;
 
 ### Manually
 
