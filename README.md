@@ -11,6 +11,8 @@
 
 The simple teaming solution for [small teams](#usecases).
 
+<hr>
+
 ## Usecases
 
 *NOTE: Use github and others if you can*
@@ -19,11 +21,15 @@ The simple teaming solution for [small teams](#usecases).
 2. You need a simple selfhostable alternative to larger services.
 3. You need single password authentification.
 
+<hr>
+
 ## Requirements
 
 1. git
 2. nodejs
 3. openssl
+
+<hr>
 
 ## Hosting
 
@@ -63,6 +69,8 @@ sudo systemctl start kotw-teams.servie
 sudo systemctl status kotw-teams.servie
 ```
 
+<hr>
+
 ## Contribution Guide
 
 1. Clone the repo: `git clone https://github.com/KekOnTheWorld/kotw-teams`
@@ -81,6 +89,12 @@ sudo systemctl status kotw-teams.servie
 9. Check your code doesn't contain linting errors/warnings: `npm run lint`
 10. Commit & PR
 
+<hr>
+
 ## License
 
 KOTW Teams is licensed under [MIT](https://github.com/KekOnTheWorld/kotw-teams/blob/main/LICENSE)
+
+<hr>
+
+&copy; 2023 KekOnTheWorld & Contributors
