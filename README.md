@@ -9,7 +9,7 @@
                                                                                                         \|_________|
 ```
 
-The simple teaming solution for [small teams](#usecases).
+The simple teaming solution for [small teams](#usecases) written using [SvelteKit](https://kit.svelte.dev).
 
 <hr>
 
