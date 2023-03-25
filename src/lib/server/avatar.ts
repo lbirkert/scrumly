@@ -1,18 +1,17 @@
 import * as jdenticon from 'jdenticon';
-import { writeFile, readFile } from 'fs/promises';
+import { writeFile, readFile, unlink } from 'fs/promises';
 import { AVATARS_DIR } from '$env/static/private';
 import { secret } from '$lib/server/secret';
 import { join } from 'path';
-import { mimes } from "$lib/constants";
+import { mimes, sizes } from "$lib/constants";
 
 import Jimp from "jimp";
 
 export function generateAvatar(): string {
 	const avatar = secret(32);
 	
-	writeAvatar(avatar, 's', 0, jdenticon.toPng(avatar, 16));
-	writeAvatar(avatar, 'm', 0, jdenticon.toPng(avatar, 32));
-	writeAvatar(avatar, 'l', 0, jdenticon.toPng(avatar, 256));
+	Object.entries(sizes).forEach(([s, p]) =>
+		writeAvatar(avatar, s, 0, jdenticon.toPng(avatar, p)));
 
 	return avatar;
 }
@@ -27,11 +26,20 @@ export async function resizeAvatar(file: File): Promise<string> {
 	
 	const image = await Jimp.read(Buffer.from(await file.arrayBuffer()));
 
-	writeAvatar(avatar, "s", _mime, await image.clone().resize(16, 16).getBufferAsync(file.type));
-	writeAvatar(avatar, "m", _mime, await image.clone().resize(32, 32).getBufferAsync(file.type));
-	writeAvatar(avatar, "l", _mime, await image.clone().resize(256, 256).getBufferAsync(file.type));
+	Object.entries(sizes).forEach(([s, p]) =>
+		writeAvatar(avatar, s, _mime, await image.clone().resize(p, p).getBufferAsync(file.type)));
 
 	return avatar;
+}
+
+export async function clearAvatar(avatar: string) {
+	Object.entries(sizes).forEach(([s]) => unlinkAvatar(avatar, s));
+}
+
+export async function unlinkAvatar(avatar: string, size: string) {
+	const path = join(AVATARS_DIR, avatar + '_' + size);
+	
+	await unlink(path);
 }
 
 export async function writeAvatar(
