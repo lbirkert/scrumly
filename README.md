@@ -45,7 +45,7 @@ Soon &trade;
 4. Setup the SQLite database: `npx prisma db push`
 5. Build: `npm run build`
 
-You can now run `kotw-teams using the `run.sh` file.
+You can now run `kotw-teams` using the `run.sh` file.
 
 _Optional: Create systemd service_
 
