@@ -45,7 +45,7 @@ Soon &trade;
 4. Setup the SQLite database: `npx prisma db push`
 5. Build: `npm run build`
 
-You can now run kotw-teams using the `run.sh` file.
+You can now run `kotw-teams using the `run.sh` file.
 
 _Optional: Create systemd service_
 
@@ -65,9 +65,9 @@ WantedBy=multi-user.target
 ```
 
 ```
-sudo systemctl enable kotw-teams.servie
-sudo systemctl start kotw-teams.servie
-sudo systemctl status kotw-teams.servie
+sudo systemctl enable kotw-teams.service
+sudo systemctl start kotw-teams.service
+sudo systemctl status kotw-teams.service
 ```
 
 <hr>
@@ -94,7 +94,7 @@ _Instead of doing the following manually, you can run `setup.sh`_
 
 ## License
 
-KOTW Teams is licensed under [MIT](https://github.com/KekOnTheWorld/kotw-teams/blob/main/LICENSE)
+`kotw-teams` is licensed under [MIT](https://github.com/KekOnTheWorld/kotw-teams/blob/main/LICENSE)
 
 <hr>
 
