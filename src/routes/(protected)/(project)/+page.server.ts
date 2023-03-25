@@ -36,37 +36,37 @@ export const actions: Actions = {
 	async avatar({ locals, request }) {
 		const { member } = locals;
 
-		const { file } = await form({ file: "file" } as const, request);
+		const { file } = await form({ file: 'file' } as const, request);
 
 		try {
 			var avatar = await resizeAvatar(file);
-		} catch(e) {
+		} catch (e) {
 			return fail(400, { error: `${e}` });
 		}
 
 		// Clear old avatar
 		await clearAvatar(member!.avatar);
-		
+
 		await prisma.member.update({
 			where: { id: member!.id },
 			data: { avatar }
 		});
-		
+
 		throw redirect(302, '/');
 	},
 	async generate({ locals }) {
 		const { member } = locals;
 
 		const avatar = await generateAvatar();
-		
+
 		// Clear old avatar
 		await clearAvatar(member!.avatar);
-		
+
 		await prisma.member.update({
 			where: { id: member!.id },
 			data: { avatar }
 		});
-		
+
 		throw redirect(302, '/');
 	}
 };

@@ -15,10 +15,11 @@
 	let project: HTMLFormElement;
 	let avatar: HTMLFormElement;
 	let member: HTMLFormElement;
+
+	let generateDisabled = false;
 </script>
 
 <SEO title="Overview" />
-
 
 <main>
 	{#if form?.error}
@@ -29,31 +30,65 @@
 		<label>
 			Name
 			<span>
-				<input name="name" required value={data.project.name} on:focusout={() => project.requestSubmit()} />
+				<input
+					name="name"
+					required
+					value={data.project.name}
+					on:focusout={() => project.requestSubmit()}
+				/>
 				<button class="hidejs" style="--color: lightcyan">Update</button>
 			</span>
 		</label>
 
 		<div class="spacer" />
 	</form>
-	<form method="POST" action="?/avatar" enctype="multipart/form-data" use:enhance bind:this={avatar}>
+	<form
+		method="POST"
+		action="?/avatar"
+		enctype="multipart/form-data"
+		use:enhance
+		bind:this={avatar}
+	>
 		<h2>Member Settings</h2>
 		<label class="avatar">
 			Avatar
 			<Avatar size="l" member={data.member} />
-			<input class="hide" type="file" name="file" accept={mimes.join(",")} on:change={() => avatar.requestSubmit()}/>
+			<input
+				class="hide"
+				type="file"
+				name="file"
+				accept={mimes.join(',')}
+				on:change={() => avatar.requestSubmit()}
+			/>
 
 			<span><button class="hidejs" style="--color: lightcyan">Upload</button></span>
 		</label>
 	</form>
-	<form method="POST" action="?/generate" use:enhance>
-		<span><button style="--color: lightcyan">Generate random</button></span>
+	<form
+		method="POST"
+		action="?/generate"
+		use:enhance={() => {
+			generateDisabled = true;
+			return async ({ update }) => {
+				await update();
+				generateDisabled = false;
+			};
+		}}
+	>
+		<span
+			><button disabled={generateDisabled} style="--color: lightcyan">Generate random</button></span
+		>
 	</form>
 	<form method="POST" action="?/member" use:enhance bind:this={member}>
 		<label>
 			Name
 			<span>
-				<input name="name" required value={data.member.name} on:focusout={() => member.requestSubmit()} />
+				<input
+					name="name"
+					required
+					value={data.member.name}
+					on:focusout={() => member.requestSubmit()}
+				/>
 				<button class="hidejs" style="--color: lightcyan">Update</button>
 			</span>
 		</label>

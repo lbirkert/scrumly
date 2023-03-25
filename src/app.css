@@ -53,9 +53,17 @@ button,
 }
 
 button:hover,
-.button:hover {
+button:active,
+.button:hover,
+.button:active {
 	background: var(--color);
 	color: black;
+}
+
+button:disabled {
+	opacity: 0.5;
+	background: transparent;
+	color: var(--color);
 }
 
 input,
@@ -134,6 +142,7 @@ ul {
 	list-style: none;
 }
 
-.hide, .hidejs {
+.hide,
+.hidejs {
 	display: none;
 }
