@@ -43,6 +43,7 @@
 		"devalue": "^4.3.0",
 		"dotenv": "^16.0.3",
 		"jdenticon": "^3.2.0",
+		"jimp": "^0.22.7",
 		"jsonwebtoken": "^9.0.0",
 		"prism-themes": "^1.9.0",
 		"prismjs": "^1.29.0",

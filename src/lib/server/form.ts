@@ -8,6 +8,8 @@ type TypeNameToType = {
 
 	text: string;
 	_text: string | undefined;
+	file: File;
+	_file: File | undefined;
 	number: number;
 	_number: number | undefined;
 	date: Date;

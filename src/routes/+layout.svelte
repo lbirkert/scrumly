@@ -10,4 +10,12 @@
 	<PreloadingIndicator />
 {/if}
 
+<noscript>
+	<style>
+		.hidejs {
+			display: block;
+		}
+	</style>
+</noscript>
+
 <slot />

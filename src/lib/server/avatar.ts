@@ -3,14 +3,34 @@ import { writeFile, readFile } from 'fs/promises';
 import { AVATARS_DIR } from '$env/static/private';
 import { secret } from '$lib/server/secret';
 import { join } from 'path';
+import { mimes } from "$lib/constants";
 
-export const mimes = ['image/svg+xml', 'image/png', 'image/jpeg', 'image/gif', 'image/bmp'];
+import Jimp from "jimp";
 
 export function generateAvatar(): string {
 	const avatar = secret(32);
-	writeAvatar(avatar, 's', 0, jdenticon.toSvg(avatar, 16));
-	writeAvatar(avatar, 'm', 0, jdenticon.toSvg(avatar, 32));
-	writeAvatar(avatar, 'l', 0, jdenticon.toSvg(avatar, 128));
+	
+	writeAvatar(avatar, 's', 0, jdenticon.toPng(avatar, 16));
+	writeAvatar(avatar, 'm', 0, jdenticon.toPng(avatar, 32));
+	writeAvatar(avatar, 'l', 0, jdenticon.toPng(avatar, 256));
+
+	return avatar;
+}
+
+export async function resizeAvatar(file: File): Promise<string> {
+	const avatar = secret(32);
+
+	const _mime = mimes.indexOf(file.type);
+	if (_mime === -1) {
+		throw Error('Invalid mime type');
+	}
+	
+	const image = await Jimp.read(Buffer.from(await file.arrayBuffer()));
+
+	writeAvatar(avatar, "s", _mime, await image.clone().resize(16, 16).getBufferAsync(file.type));
+	writeAvatar(avatar, "m", _mime, await image.clone().resize(32, 32).getBufferAsync(file.type));
+	writeAvatar(avatar, "l", _mime, await image.clone().resize(256, 256).getBufferAsync(file.type));
+
 	return avatar;
 }
 
@@ -53,3 +73,4 @@ export async function readAvatar(avatar: string, size: string): Promise<[string,
 
 	return [mime, content];
 }
+

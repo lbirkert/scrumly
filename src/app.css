@@ -133,3 +133,7 @@ main {
 ul {
 	list-style: none;
 }
+
+.hide, .hidejs {
+	display: none;
+}
