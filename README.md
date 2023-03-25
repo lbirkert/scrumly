@@ -1,38 +1,86 @@
-# create-svelte
-
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
+```
+ ___  __    ________  _________  ___       __           _________  _______   ________  _____ ______   ________      
+|\  \|\  \ |\   __  \|\___   ___\\  \     |\  \        |\___   ___\\  ___ \ |\   __  \|\   _ \  _   \|\   ____\     
+\ \  \/  /|\ \  \|\  \|___ \  \_\ \  \    \ \  \       \|___ \  \_\ \   __/|\ \  \|\  \ \  \\\__\ \  \ \  \___|_    
+ \ \   ___  \ \  \\\  \   \ \  \ \ \  \  __\ \  \           \ \  \ \ \  \_|/_\ \   __  \ \  \\|__| \  \ \_____  \   
+  \ \  \\ \  \ \  \\\  \   \ \  \ \ \  \|\__\_\  \           \ \  \ \ \  \_|\ \ \  \ \  \ \  \    \ \  \|____|\  \  
+   \ \__\\ \__\ \_______\   \ \__\ \ \____________\           \ \__\ \ \_______\ \__\ \__\ \__\    \ \__\____\_\  \ 
+    \|__| \|__|\|_______|    \|__|  \|____________|            \|__|  \|_______|\|__|\|__|\|__|     \|__|\_________\
+                                                                                                        \|_________|
 ```
 
-## Developing
+The simple teaming solution for [small teams](#usecases).
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Usecases
 
-```bash
-npm run dev
+*NOTE: Use github and others if you can*
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+1. You have got people who you rarely work with and do not have got a github account (or similar).
+2. You need a simple selfhostable alternative to larger services.
+3. You need single password authentification.
+
+## Requirements
+
+1. git
+2. nodejs
+3. openssl
+
+## Hosting
+
+### Docker
+
+Soon &tm;
+
+### Manually
+
+1. Clone the repo: `git clone https://github.com/KekOnTheWorld/kotw-teams`
+2. Install the dependencies: `npm install`
+3. Copy `default.env` to `.env` and configure
+4. Setup the SQLite database: `npx prisma db push`
+5. Build: `npm run build`
+
+You can now run kotw-teams using the `run.sh` file.
+
+*Optional: Create systemd service*
+
+/etc/systemd/system/kotw-teams.service
+```ini
+[Unit]
+Description=KOTW Teams
+
+[Service]
+Type=simple
+WorkingDirectory=/path/to/kotw-teams
+ExecStart=/bin/bash /path/to/kotw-teams/run.sh
+
+[Install]
+WantedBy=multi-user.target
 ```
 
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
+```
+sudo systemctl enable kotw-teams.servie
+sudo systemctl start kotw-teams.servie
+sudo systemctl status kotw-teams.servie
 ```
 
-You can preview the production build with `npm run preview`.
+## Contribution Guide
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+1. Clone the repo: `git clone https://github.com/KekOnTheWorld/kotw-teams`
+
+*Instead of doing the following manually, you can run `setup.sh`*
+
+2. Install the dependencies: `npm install`
+3. Copy `default.env` to `.env`
+4. Create `run/avatars` directory
+5. Setup the SQLite database: `npx prisma db push`
+6. Start the development server: `npm run dev`
+
+7. Change some things.
+
+8. Run the formatter: `npm run format`
+9. Check your code doesn't contain linting errors/warnings: `npm run lint`
+10. Commit & PR
+
+## License
+
+KOTW Teams is licensed under [MIT](https://github.com/KekOnTheWorld/kotw-teams/blob/main/LICENSE)
