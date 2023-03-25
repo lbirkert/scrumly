@@ -27,7 +27,7 @@ export const actions: Actions = {
 
 		// TODO: Handle name collisions
 		await prisma.member.update({
-			where: { id: member!.id },
+			where: { id: member.id },
 			data: { name }
 		});
 
@@ -38,17 +38,18 @@ export const actions: Actions = {
 
 		const { file } = await form({ file: 'file' } as const, request);
 
+		let avatar: string;
 		try {
-			var avatar = await resizeAvatar(file);
+			avatar = await resizeAvatar(file);
 		} catch (e) {
 			return fail(400, { error: `${e}` });
 		}
 
 		// Clear old avatar
-		await clearAvatar(member!.avatar);
+		await clearAvatar(member.avatar);
 
 		await prisma.member.update({
-			where: { id: member!.id },
+			where: { id: member.id },
 			data: { avatar }
 		});
 
@@ -60,10 +61,10 @@ export const actions: Actions = {
 		const avatar = await generateAvatar();
 
 		// Clear old avatar
-		await clearAvatar(member!.avatar);
+		await clearAvatar(member.avatar);
 
 		await prisma.member.update({
-			where: { id: member!.id },
+			where: { id: member.id },
 			data: { avatar }
 		});
 

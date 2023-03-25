@@ -19,9 +19,9 @@
 		{ name: 'Done', issues: done }
 	];
 
-	export let dragIssue: number = -1;
-	export let dragFirst: number = -1;
-	export let dragLast: number = -1;
+	export let dragIssue = -1;
+	export let dragFirst = -1;
+	export let dragLast = -1;
 
 	async function onDragEnd() {
 		const firstIssues = categories[dragFirst].issues;

@@ -6,8 +6,8 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			member?: Member;
-			project?: Project;
+			member: Member;
+			project: Project;
 			auth: boolean;
 		}
 		// interface PageData {}

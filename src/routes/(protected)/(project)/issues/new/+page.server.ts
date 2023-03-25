@@ -16,7 +16,7 @@ export const actions: Actions = {
 			data: {
 				title,
 				projectId: project.id,
-				authorId: member!.id
+				authorId: member.id
 			}
 		});
 
@@ -24,7 +24,7 @@ export const actions: Actions = {
 			data: {
 				issueId: id,
 				content: content,
-				memberId: member!.id
+				memberId: member.id
 			}
 		});
 

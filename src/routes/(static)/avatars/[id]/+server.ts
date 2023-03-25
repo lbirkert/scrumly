@@ -6,10 +6,13 @@ import type { RequestHandler } from './$types';
 export const GET: RequestHandler = async ({ params, url }) => {
 	const size = url.searchParams.get('s') || '128';
 
+	let mime: string;
+	let content: Buffer;
 	try {
-		var [mime, content] = await readAvatar(params.id, size);
+		[mime, content] = await readAvatar(params.id, size);
 	} catch (e) {
 		throw error(404, 'Not found');
 	}
+
 	return new Response(new Blob([content], { type: mime }));
 };

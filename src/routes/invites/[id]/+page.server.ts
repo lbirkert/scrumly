@@ -1,6 +1,6 @@
 import type { PageServerLoad, Actions } from './$types';
 
-import { safeInvite } from '$lib/server/safe';
+import { safeInvite, type InputInvite } from '$lib/server/safe';
 
 import { prisma } from '$lib/server/prisma';
 import { secret } from '$lib/server/secret';
@@ -13,7 +13,10 @@ import jwt from 'jsonwebtoken';
 
 import type { Prisma } from '@prisma/client';
 
-async function findInvite<T extends Prisma.InviteInclude | undefined>(params: any, include: T) {
+async function findInvite<T extends Prisma.InviteInclude | undefined>(
+	params: { id: string },
+	include: T
+) {
 	try {
 		const issue = await prisma.invite.findUnique({
 			where: { id: params.id },
@@ -33,7 +36,7 @@ async function findInvite<T extends Prisma.InviteInclude | undefined>(params: an
 
 export const load: PageServerLoad = async ({ params }) => {
 	return {
-		invite: safeInvite(await findInvite(params, { creator: true, project: true }))!
+		invite: safeInvite((await findInvite(params, { creator: true, project: true })) as InputInvite)
 	};
 };
 
@@ -50,7 +53,7 @@ export const actions: Actions = {
 		const login = secret();
 
 		// Generate default avatar
-		const avatar = generateAvatar();
+		const avatar = await generateAvatar();
 
 		const member = await prisma.member.create({
 			data: {
@@ -77,7 +80,7 @@ export const actions: Actions = {
 		// Invite usages
 		if (invite.usages !== -1) {
 			if (invite.usages < 1) {
-				await prisma.invite.remove({
+				await prisma.invite.delete({
 					where: { id: invite.id }
 				});
 			} else {

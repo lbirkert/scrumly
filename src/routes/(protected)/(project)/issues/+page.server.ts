@@ -6,10 +6,11 @@ import { safeIssue, type SafeIssue } from '$lib/server/safe';
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const { project } = locals;
 
+	let page: number;
 	try {
-		var page = parseInt((params as { page: string }).page) || 0;
+		page = parseInt((params as { page: string }).page) || 0;
 	} catch (e) {
-		var page = 0;
+		page = 0;
 	}
 
 	const issues = await prisma.issue.findMany({

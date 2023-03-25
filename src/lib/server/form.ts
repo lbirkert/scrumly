@@ -54,5 +54,5 @@ export async function form<T extends Record<PropertyKey, keyof TypeNameToType>>(
 		} else if (!optional) throw error(400, `Missing field ${field}`);
 
 		return p;
-	}, {} as Record<string, any>) as MapTypeNamesToTypes<typeof fields>;
+	}, {} as Record<string, unknown>) as MapTypeNamesToTypes<typeof fields>;
 }

@@ -4,7 +4,7 @@ import { form } from '$lib/server/form';
 import { prisma } from '$lib/server/prisma';
 import { secret } from '$lib/server/secret';
 
-export let actions: Actions = {
+export const actions: Actions = {
 	default: async ({ request, locals }) => {
 		const { member, project } = locals;
 
@@ -19,8 +19,8 @@ export let actions: Actions = {
 
 		await prisma.invite.create({
 			data: {
-				creatorId: member!.id,
-				projectId: project!.id,
+				creatorId: member.id,
+				projectId: project.id,
 				expires,
 				usages,
 				id

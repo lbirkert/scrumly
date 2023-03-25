@@ -1,7 +1,7 @@
 <script lang="ts">
 	export let title: string;
-	export let description: string = '';
-	export let themeColor: string = '#90EE90';
+	export let description = '';
+	export let themeColor = '#90EE90';
 	export let image: { url: string; alt: string } | undefined = undefined;
 
 	const pageTitle = `KOTW Teams | ${title}`;

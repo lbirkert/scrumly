@@ -52,7 +52,7 @@ export async function writeAvatar(
 	avatar: string,
 	size: string,
 	mime: string | number,
-	content: any
+	content: Buffer | string
 ) {
 	const path = join(AVATARS_DIR, avatar + '_' + size);
 

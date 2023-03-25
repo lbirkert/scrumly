@@ -1,10 +1,10 @@
 ```
- ___  __    ________  _________  ___       __           _________  _______   ________  _____ ______   ________      
-|\  \|\  \ |\   __  \|\___   ___\\  \     |\  \        |\___   ___\\  ___ \ |\   __  \|\   _ \  _   \|\   ____\     
-\ \  \/  /|\ \  \|\  \|___ \  \_\ \  \    \ \  \       \|___ \  \_\ \   __/|\ \  \|\  \ \  \\\__\ \  \ \  \___|_    
- \ \   ___  \ \  \\\  \   \ \  \ \ \  \  __\ \  \           \ \  \ \ \  \_|/_\ \   __  \ \  \\|__| \  \ \_____  \   
-  \ \  \\ \  \ \  \\\  \   \ \  \ \ \  \|\__\_\  \           \ \  \ \ \  \_|\ \ \  \ \  \ \  \    \ \  \|____|\  \  
-   \ \__\\ \__\ \_______\   \ \__\ \ \____________\           \ \__\ \ \_______\ \__\ \__\ \__\    \ \__\____\_\  \ 
+ ___  __    ________  _________  ___       __           _________  _______   ________  _____ ______   ________
+|\  \|\  \ |\   __  \|\___   ___\\  \     |\  \        |\___   ___\\  ___ \ |\   __  \|\   _ \  _   \|\   ____\
+\ \  \/  /|\ \  \|\  \|___ \  \_\ \  \    \ \  \       \|___ \  \_\ \   __/|\ \  \|\  \ \  \\\__\ \  \ \  \___|_
+ \ \   ___  \ \  \\\  \   \ \  \ \ \  \  __\ \  \           \ \  \ \ \  \_|/_\ \   __  \ \  \\|__| \  \ \_____  \
+  \ \  \\ \  \ \  \\\  \   \ \  \ \ \  \|\__\_\  \           \ \  \ \ \  \_|\ \ \  \ \  \ \  \    \ \  \|____|\  \
+   \ \__\\ \__\ \_______\   \ \__\ \ \____________\           \ \__\ \ \_______\ \__\ \__\ \__\    \ \__\____\_\  \
     \|__| \|__|\|_______|    \|__|  \|____________|            \|__|  \|_______|\|__|\|__|\|__|     \|__|\_________\
                                                                                                         \|_________|
 ```
@@ -15,7 +15,7 @@ The simple teaming solution for [small teams](#usecases) written using [SvelteKi
 
 ## Usecases
 
-*NOTE: Use github and others if you can*
+_NOTE: Use github and others if you can_
 
 1. You have got people who you rarely work with and do not have got a github account (or similar).
 2. You need a simple selfhostable alternative to larger services.
@@ -47,9 +47,10 @@ Soon &tm;
 
 You can now run kotw-teams using the `run.sh` file.
 
-*Optional: Create systemd service*
+_Optional: Create systemd service_
 
 /etc/systemd/system/kotw-teams.service
+
 ```ini
 [Unit]
 Description=KOTW Teams
@@ -75,7 +76,7 @@ sudo systemctl status kotw-teams.servie
 
 1. Clone the repo: `git clone https://github.com/KekOnTheWorld/kotw-teams`
 
-*Instead of doing the following manually, you can run `setup.sh`*
+_Instead of doing the following manually, you can run `setup.sh`_
 
 2. Install the dependencies: `npm install`
 3. Copy `default.env` to `.env`

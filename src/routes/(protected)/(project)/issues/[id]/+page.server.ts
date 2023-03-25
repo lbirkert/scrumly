@@ -6,11 +6,11 @@ import type { Project, Prisma } from '@prisma/client';
 
 import { prisma } from '$lib/server/prisma';
 import { form } from '$lib/server/form';
-import { safeIssue } from '$lib/server/safe';
+import { safeIssue, type InputIssue } from '$lib/server/safe';
 
 // TODO: find out how to type these
 async function findIssue<T extends Prisma.IssueInclude | undefined>(
-	params: any,
+	params: { id: string },
 	project: Project,
 	include: T
 ) {
@@ -41,12 +41,12 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 
 	return {
 		issue: safeIssue(
-			await findIssue(params, project, {
+			(await findIssue(params, project, {
 				comments: { include: { author: true } },
 				author: true,
 				assignee: true
-			} as const)
-		)!
+			} as const)) as InputIssue
+		)
 	};
 };
 
@@ -67,7 +67,7 @@ export const actions: Actions = {
 			data: {
 				author: {
 					connect: {
-						id: member!.id
+						id: member.id
 					}
 				},
 				issue: {
@@ -107,7 +107,7 @@ export const actions: Actions = {
 		await prisma.comment.deleteMany({
 			where: {
 				id: id,
-				memberId: member!.id
+				memberId: member.id
 			}
 		});
 
@@ -124,7 +124,7 @@ export const actions: Actions = {
 			data: { content },
 			where: {
 				id: id,
-				memberId: member!.id
+				memberId: member.id
 			}
 		});
 
@@ -137,7 +137,7 @@ export const actions: Actions = {
 		const issue = await findIssue(params, project, undefined);
 
 		await prisma.issue.update({
-			data: { assigneeId: issue.assigneeId === member!.id ? null : member!.id },
+			data: { assigneeId: issue.assigneeId === member.id ? null : member.id },
 			where: { id: issue.id }
 		});
 	},

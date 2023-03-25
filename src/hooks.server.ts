@@ -21,7 +21,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 					throw new Error('Something went wrong');
 				}
 
-				let member = (await prisma.member.findUnique({
+				const member = (await prisma.member.findUnique({
 					where: {
 						id: jwtMember.id
 					},

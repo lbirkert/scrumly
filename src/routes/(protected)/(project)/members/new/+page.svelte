@@ -8,7 +8,7 @@
 	$: invite = form && new URL(`/invites/${form.id}`, $page.url);
 
 	function copy() {
-		navigator.clipboard.writeText(invite!.toString());
+		navigator.clipboard.writeText(invite?.toString() ?? '');
 	}
 </script>
 
