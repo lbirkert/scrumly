@@ -8,7 +8,7 @@
 	export let form: ActionData;
 </script>
 
-<SEO title="Login" description="Login to KOTW Teams" themeColor="" />
+<SEO title="Login" description="Login to KOTW Teams" />
 
 <main class="dialog">
 	<form method="POST" use:enhance>

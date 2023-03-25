@@ -20,7 +20,7 @@
 
 	const title = 'Invitation';
 	const description = `${creator.name} invited you to join ${project.name}`;
-	const themeColor = 'lightblue';
+	const themeColor = '#E0FFFF';
 	const image = {
 		alt: `${creator.name}'s Avatar`,
 		url: `/avatars/${creator.avatar}?s=m`

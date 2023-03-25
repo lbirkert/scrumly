@@ -19,7 +19,7 @@
 			Name
 			<input name="name" required value={data.project.name} />
 		</label>
-		<button style="--color: lightblue">Update</button>
+		<button style="--color: lightcyan">Update</button>
 
 		<div class="spacer" />
 	</form>
@@ -30,7 +30,7 @@
 			Name
 			<input name="name" required value={data.member.name} />
 		</label>
-		<button style="--color: lightblue">Update</button>
+		<button style="--color: lightcyan">Update</button>
 	</form>
 </main>
 
