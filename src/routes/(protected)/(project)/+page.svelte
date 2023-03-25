@@ -29,7 +29,7 @@
 		<label>
 			Name
 			<span>
-				<input name="name" required value={data.project.name} on:focusout={(e) => project.requestSubmit()} />
+				<input name="name" required value={data.project.name} on:focusout={() => project.requestSubmit()} />
 				<button class="hidejs" style="--color: lightcyan">Update</button>
 			</span>
 		</label>
@@ -45,6 +45,9 @@
 
 			<span><button class="hidejs" style="--color: lightcyan">Upload</button></span>
 		</label>
+	</form>
+	<form method="POST" action="?/generate" use:enhance>
+		<span><button style="--color: lightcyan">Generate random</button></span>
 	</form>
 	<form method="POST" action="?/member" use:enhance bind:this={member}>
 		<label>

@@ -7,11 +7,11 @@ import { mimes, sizes } from "$lib/constants";
 
 import Jimp from "jimp";
 
-export function generateAvatar(): string {
+export async function generateAvatar(): Promise<string> {
 	const avatar = secret(32);
 	
-	Object.entries(sizes).forEach(([s, p]) =>
-		writeAvatar(avatar, s, 0, jdenticon.toPng(avatar, p)));
+	await Promise.all(Object.entries(sizes).map(async ([s, p]) =>
+		await writeAvatar(avatar, s, 0, jdenticon.toPng(avatar, p))));
 
 	return avatar;
 }
@@ -26,14 +26,14 @@ export async function resizeAvatar(file: File): Promise<string> {
 	
 	const image = await Jimp.read(Buffer.from(await file.arrayBuffer()));
 
-	Object.entries(sizes).forEach(([s, p]) =>
-		writeAvatar(avatar, s, _mime, await image.clone().resize(p, p).getBufferAsync(file.type)));
+	await Promise.all(Object.entries(sizes).map(async ([s, p]) =>
+		writeAvatar(avatar, s, _mime, await image.clone().resize(p, p).getBufferAsync(file.type))));
 
 	return avatar;
 }
 
 export async function clearAvatar(avatar: string) {
-	Object.entries(sizes).forEach(([s]) => unlinkAvatar(avatar, s));
+	await Promise.all(Object.entries(sizes).map(async ([s]) => await unlinkAvatar(avatar, s)));
 }
 
 export async function unlinkAvatar(avatar: string, size: string) {

@@ -23,7 +23,7 @@ export const actions: Actions = {
 		const login = secret();
 
 		// Generate default avatar
-		const avatar = generateAvatar();
+		const avatar = await generateAvatar();
 
 		const project = await prisma.project.create({
 			data: { name }

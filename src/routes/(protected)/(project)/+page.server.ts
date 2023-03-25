@@ -2,7 +2,7 @@ import type { Actions } from './$types';
 
 import { form } from '$lib/server/form';
 import { prisma } from '$lib/server/prisma';
-import { resizeAvatar, clearAvatar } from '$lib/server/avatar';
+import { resizeAvatar, clearAvatar, generateAvatar } from '$lib/server/avatar';
 
 import { redirect, fail } from '@sveltejs/kit';
 
@@ -44,6 +44,21 @@ export const actions: Actions = {
 			return fail(400, { error: `${e}` });
 		}
 
+		// Clear old avatar
+		await clearAvatar(member!.avatar);
+		
+		await prisma.member.update({
+			where: { id: member!.id },
+			data: { avatar }
+		});
+		
+		throw redirect(302, '/');
+	},
+	async generate({ locals }) {
+		const { member } = locals;
+
+		const avatar = await generateAvatar();
+		
 		// Clear old avatar
 		await clearAvatar(member!.avatar);
 		
