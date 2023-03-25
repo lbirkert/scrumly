@@ -1,4 +1,6 @@
 <script lang="ts">
+	import SEO from '$lib/SEO.svelte';
+
 	import type { PageData, ActionData } from './$types';
 	import { Avatar } from '$lib/member';
 	import { enhance } from '$app/forms';
@@ -13,7 +15,19 @@
 			e.returnValue = '';
 		};
 	}
+
+	const { creator, project } = data.invite;
+
+	const title = 'Invitation';
+	const description = `${creator.name} invited you to join ${project.name}`;
+	const themeColor = 'lightblue';
+	const image = {
+		alt: `${creator.name}'s Avatar`,
+		url: `/avatars/${creator.avatar}?s=m`
+	};
 </script>
+
+<SEO {title} {description} {themeColor} {image} />
 
 <main class="dialog">
 	{#if form?.login}
@@ -27,8 +41,8 @@
 		<form method="POST" action="?/accept" use:enhance>
 			<h1>Invitation</h1>
 			<p>
-				<Avatar member={data.invite.creator} />
-				{data.invite.creator.name} invited you to join {data.invite.project.name}
+				<Avatar member={creator} />
+				{creator.name} invited you to join {project.name}
 			</p>
 			<label>
 				Name

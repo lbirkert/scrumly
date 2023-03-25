@@ -1,10 +1,14 @@
 <script lang="ts">
+	import SEO from '$lib/SEO.svelte';
+
 	import type { ActionData } from './$types';
 
 	import { enhance } from '$app/forms';
 
 	export let form: ActionData;
 </script>
+
+<SEO title="Login" description="Login to KOTW Teams" themeColor="" />
 
 <main class="dialog">
 	<form method="POST" use:enhance>

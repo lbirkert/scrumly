@@ -1,4 +1,6 @@
 <script lang="ts">
+	import SEO from '$lib/SEO.svelte';
+
 	import { page } from '$app/stores';
 
 	import type { PageData } from './$types';
@@ -7,6 +9,8 @@
 
 	export let data: PageData;
 </script>
+
+<SEO title="Issues" />
 
 <main>
 	<form>

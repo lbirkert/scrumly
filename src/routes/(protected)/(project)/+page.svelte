@@ -1,4 +1,6 @@
 <script lang="ts">
+	import SEO from '$lib/SEO.svelte';
+
 	import type { PageData } from './$types';
 
 	import { Avatar } from '$lib/member';
@@ -7,6 +9,8 @@
 
 	export let data: PageData;
 </script>
+
+<SEO title="Overview" />
 
 <main>
 	<form method="POST" action="?/project" use:enhance>

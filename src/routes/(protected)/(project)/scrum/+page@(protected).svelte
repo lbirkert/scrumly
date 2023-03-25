@@ -1,4 +1,6 @@
 <script lang="ts">
+	import SEO from '$lib/SEO.svelte';
+
 	import Header from '../Header.svelte';
 	import Category from './Category.svelte';
 	import type { PageData } from './$types';
@@ -43,6 +45,8 @@
 		categories = categories;
 	}
 </script>
+
+<SEO title="Scrum" />
 
 <div>
 	<Header member={data.member} />

@@ -1,9 +1,13 @@
 <script lang="ts">
+	import SEO from '$lib/SEO.svelte';
+
 	import type { PageData } from './$types';
 	import { Member } from '$lib/member';
 
 	export let data: PageData;
 </script>
+
+<SEO title="Members" />
 
 <main>
 	<form>
