@@ -23,7 +23,7 @@
 	const themeColor = '#E0FFFF';
 	const image = {
 		alt: `${creator.name}'s Avatar`,
-		url: `/avatars/${creator.avatar}?s=m`
+		url: `/avatars/${creator.avatar}?s=l`
 	};
 </script>
 
