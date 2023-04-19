@@ -11,38 +11,55 @@ datasource db {
 }
 
 model Comment {
-  id        Int      @id @default(autoincrement())
+  id        String
   createdAt DateTime @default(now())
-  author    Member   @relation(fields: [memberId], references: [id])
   content   String
-  memberId  Int
-  issue     Issue?   @relation(fields: [issueId], references: [id])
-  issueId   Int?
+  author    Member   @relation(fields: [authorId, projectId], references: [id, projectId])
+  task      Task     @relation(fields: [taskId, projectId], references: [id, projectId])
+  project   Project  @relation(fields: [projectId], references: [id])
+
+  authorId  String
+  taskId    String
+  projectId String
+
+  @@id([id, taskId, projectId])
 }
 
-model Issue {
-  id         Int       @id @default(autoincrement())
-  // TODO: add localId
-  //  localId     Int
-  project    Project   @relation(fields: [projectId], references: [id])
-  createdAt  DateTime  @default(now())
-  closedAt   DateTime?
-  author     Member    @relation(fields: [authorId], references: [id], name: "Author")
-  assignee   Member?   @relation(fields: [assigneeId], references: [id], name: "Assignee")
-  title      String
-  comments   Comment[]
-  authorId   Int
-  assigneeId Int?
-  projectId  Int
+model Task {
+  id      String
+  project Project @relation(fields: [projectId], references: [id])
+  content String
+
+  assignees Assignee[]
+  comments  Comment[]
+  scrums    Scrum[]
+
+  projectId String
+
+  @@id([id, projectId])
+}
+
+model Assignee {
+  task      Task    @relation(fields: [taskId, projectId], references: [id, projectId])
+  member    Member  @relation(fields: [memberId, projectId], references: [id, projectId])
+  project   Project @relation(fields: [projectId], references: [id])
+  taskId    String
+  memberId  String
+  projectId String
+
+  @@id([taskId, memberId, projectId])
 }
 
 model Project {
-  id          Int          @id @default(autoincrement())
-  createdAt   DateTime     @default(now())
-  name        String
-  members     Member[]
-  issues      Issue[]
-  invites Invite[]
+  id        String     @id
+  name      String
+  members   Member[]
+  tasks     Task[]
+  invites   Invite[]
+  comments  Comment[]
+  assignees Assignee[]
+  scrums    Scrum[]
+  Snapshot  Snapshot[]
 }
 
 model Invite {
@@ -50,23 +67,44 @@ model Invite {
   expires   DateTime?
   usages    Int
   project   Project   @relation(fields: [projectId], references: [id])
-  creator   Member    @relation(fields: [creatorId], references: [id])
-  creatorId Int
-  projectId Int
+  creator   Member    @relation(fields: [creatorId, projectId], references: [id, projectId])
+  creatorId String
+  projectId String
 }
 
 model Member {
-  id        Int       @id @default(autoincrement())
-  project   Project   @relation(fields: [projectId], references: [id])
-  createdAt DateTime  @default(now())
-  name      String
-  login     String    @unique
-  avatar    String
-  role      Int
-  comments  Comment[]
-  written   Issue[]   @relation("Author")
-  assigned  Issue[]   @relation("Assignee")
+  id      String
+  project Project @relation(fields: [projectId], references: [id])
+  name    String
+  login   String  @unique
+  avatar  String
+  role    Int
 
-  projectId  Int
-  invites Invite[]
+  comments Comment[]
+  assigned Assignee[]
+  invites  Invite[]
+
+  projectId String
+
+  @@id([id, projectId])
+}
+
+model Scrum {
+  id      String
+  project Project @relation(fields: [projectId], references: [id])
+  task    Task?   @relation(fields: [taskId, projectId], references: [id, projectId])
+  content String?
+  column  Int
+
+  projectId String
+  taskId    String
+
+  @@id([id, projectId])
+}
+
+model Snapshot {
+  id      String  @unique
+  project Project @relation(fields: [projectId], references: [id])
+
+  projectId String
 }
