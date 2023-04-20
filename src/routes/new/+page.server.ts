@@ -20,8 +20,6 @@ export const actions: Actions = {
 			});
 		}
 
-		const login = secret();
-
 		// Generate default avatar
 		const avatar = await generateAvatar();
 
@@ -29,18 +27,18 @@ export const actions: Actions = {
 			data: { name, id: secret(5) }
 		});
 
-		const member = await prisma.member.create({
+		const { login } = await prisma.member.create({
 			data: {
 				id: secret(5),
 				projectId: project.id,
+				login: secret(),
 				role: 0,
 				name: 'Anonymous',
-				avatar,
-				login
+				avatar
 			}
 		});
 
-		const _token = jwt.sign({ id: member.id }, JWT_SECRET, {
+		const _token = jwt.sign({ login }, JWT_SECRET, {
 			expiresIn: '1d'
 		});
 
