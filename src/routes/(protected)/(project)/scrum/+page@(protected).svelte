@@ -11,7 +11,7 @@
 	let columns = [
 		{ name: 'Story', handle: (v) => v },
 		{
-			name: 'ToDo',
+			name: 'TODO',
 			async handle(v) {
 				if (v.task) {
 					await fetch(`/tasks/${v.task.id}?/unassign`, {
