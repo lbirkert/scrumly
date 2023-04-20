@@ -61,7 +61,7 @@ model Project {
   comments  Comment[]
   assignees Assignee[]
   scrums    Scrum[]
-  Snapshot  Snapshot[]
+  snapshots Snapshot[]
 }
 
 model Invite {
@@ -105,8 +105,9 @@ model Scrum {
 }
 
 model Snapshot {
-  id      String  @unique
-  project Project @relation(fields: [projectId], references: [id])
+  id        String   @unique
+  project   Project  @relation(fields: [projectId], references: [id])
+  createdAt DateTime @default(now())
 
   projectId String
 }

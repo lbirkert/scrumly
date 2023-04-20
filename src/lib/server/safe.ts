@@ -1,6 +1,7 @@
 import type { Member, Scrum, Task, Comment, Project, Invite, Assignee } from '@prisma/client';
 
-// TODO: figure out how to type these
+/// INVITE
+
 export type SafeInvite<A extends symbol | string, B extends symbol | string> = {
 	id: string;
 	creator: SafeMember<A, B>;

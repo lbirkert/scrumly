@@ -33,6 +33,10 @@
 		{
 			pathname: '/members',
 			name: 'Members'
+		},
+		{
+			pathname: '/snapshots',
+			name: 'Snapshots'
 		}
 	];
 </script>

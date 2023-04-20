@@ -10,7 +10,7 @@
 	export let data: PageData;
 </script>
 
-<SEO title="Issues" />
+<SEO title="Tasks" />
 
 <main>
 	<form>
