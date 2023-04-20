@@ -26,11 +26,12 @@ export const actions: Actions = {
 		const avatar = await generateAvatar();
 
 		const project = await prisma.project.create({
-			data: { name }
+			data: { name, id: secret(5) }
 		});
 
 		const member = await prisma.member.create({
 			data: {
+				id: secret(5),
 				projectId: project.id,
 				role: 0,
 				name: 'Anonymous',

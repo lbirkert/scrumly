@@ -36,7 +36,8 @@
 		margin-bottom: 2px;
 	}
 
-	span :global(ul) {
-		list-style: inside;
+	span :global(ul),
+	span :global(ol) {
+		list-style-position: inside;
 	}
 </style>

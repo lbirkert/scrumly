@@ -15,8 +15,9 @@ model Comment {
   createdAt DateTime @default(now())
   content   String
   author    Member   @relation(fields: [authorId, projectId], references: [id, projectId])
-  task      Task     @relation(fields: [taskId, projectId], references: [id, projectId])
-  project   Project  @relation(fields: [projectId], references: [id])
+  task      Task     @relation(fields: [taskId, projectId], references: [id, projectId], onDelete: Cascade)
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  system    Boolean
 
   authorId  String
   taskId    String
@@ -27,8 +28,9 @@ model Comment {
 
 model Task {
   id      String
-  project Project @relation(fields: [projectId], references: [id])
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   content String
+  done    Boolean
 
   assignees Assignee[]
   comments  Comment[]
@@ -40,9 +42,9 @@ model Task {
 }
 
 model Assignee {
-  task      Task    @relation(fields: [taskId, projectId], references: [id, projectId])
+  task      Task    @relation(fields: [taskId, projectId], references: [id, projectId], onDelete: Cascade)
   member    Member  @relation(fields: [memberId, projectId], references: [id, projectId])
-  project   Project @relation(fields: [projectId], references: [id])
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   taskId    String
   memberId  String
   projectId String
@@ -66,7 +68,7 @@ model Invite {
   id        String    @id
   expires   DateTime?
   usages    Int
-  project   Project   @relation(fields: [projectId], references: [id])
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
   creator   Member    @relation(fields: [creatorId, projectId], references: [id, projectId])
   creatorId String
   projectId String
@@ -74,7 +76,7 @@ model Invite {
 
 model Member {
   id      String
-  project Project @relation(fields: [projectId], references: [id])
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   name    String
   login   String  @unique
   avatar  String
@@ -91,13 +93,13 @@ model Member {
 
 model Scrum {
   id      String
-  project Project @relation(fields: [projectId], references: [id])
-  task    Task?   @relation(fields: [taskId, projectId], references: [id, projectId])
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  task    Task?   @relation(fields: [taskId, projectId], references: [id, projectId], onDelete: Cascade)
   content String?
   column  Int
 
   projectId String
-  taskId    String
+  taskId    String?
 
   @@id([id, projectId])
 }

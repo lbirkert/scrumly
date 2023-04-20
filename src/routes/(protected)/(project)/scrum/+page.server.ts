@@ -1,24 +1,26 @@
 import type { PageServerLoad, Actions } from './$types';
 
 import { form } from '$lib/server/form';
-import { safeMember, safeProject, safeIssue } from '$lib/server/safe';
+import { safeMember, safeProject, safeScrum } from '$lib/server/safe';
 import { prisma } from '$lib/server/prisma';
 
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const { member, project } = locals;
 
-	const issues = await prisma.issue.findMany({
+	const scrums = await prisma.scrum.findMany({
 		where: {
 			projectId: member.projectId
 		},
 		include: {
-			author: true,
-			assignee: true,
-			comments: {
+			task: {
 				include: {
-					author: true
+					assignees: {
+						include: {
+							member: true
+						}
+					}
 				}
 			}
 		}
@@ -27,35 +29,94 @@ export const load: PageServerLoad = async ({ locals }) => {
 	return {
 		member: safeMember(member),
 		project: safeProject(project),
-		issues: issues.map(safeIssue)
+		scrums: scrums.map(safeScrum)
 	};
 };
 
 export const actions: Actions = {
-	async default({ request, locals }) {
-		const { member } = locals;
-		const { id, to } = await form({ id: 'number', to: 'number' } as const, request);
+	async move({ request, locals }) {
+		const { project } = locals;
 
-		const issue = await prisma.issue.findUnique({ where: { id } });
+		const { id, to } = await form({ id: 'string', to: 'number' } as const, request);
 
-		if (!issue || issue.projectId != member.projectId) throw error(404, 'Not found');
+		const scrum = await prisma.scrum.findUnique({
+			where: {
+				id_projectId: {
+					id: id,
+					projectId: project.id
+				}
+			}
+		});
+
+		if (!scrum) throw error(404, 'Not found');
 
 		// TODO: check member permissions
 
-		let data: { assignee?: { id: number } | null; closedAt?: Date | null };
-		if (to === 0) {
-			data = { assignee: null, closedAt: null };
-		} else if (to === 1) {
-			data = { assignee: safeMember<'project', ''>(member), closedAt: null };
-		} else if (to === 2) {
-			data = { closedAt: new Date() };
-		} else throw error(400, 'Bad request');
+		await prisma.scrum.update({
+			where: {
+				id_projectId: {
+					id: id,
+					projectId: project.id
+				}
+			},
+			data: { column: to }
+		});
+	},
+	async delete({ request, locals }) {
+		const { project } = locals;
 
-		await prisma.issue.update({
-			where: { id },
-			data: { closedAt: data.closedAt, assigneeId: data.assignee ? data.assignee.id : null }
+		const { id } = await form({ id: 'string' } as const, request);
+
+		await prisma.scrum.delete({
+			where: {
+				id_projectId: {
+					projectId: project.id,
+					id
+				}
+			}
 		});
 
-		return data;
+		throw redirect(302, '/scrum');
+	},
+	async edit({ request, locals }) {
+		const { project } = locals;
+
+		const { id, content } = await form({ id: 'string', content: 'string' } as const, request);
+
+		const scrum = await prisma.scrum.findUnique({
+			where: {
+				id_projectId: {
+					projectId: project.id,
+					id
+				}
+			},
+			include: { task: true }
+		});
+
+		if (!scrum) throw error(404, 'Not found');
+
+		if (scrum.task) {
+			await prisma.task.update({
+				where: {
+					id_projectId: {
+						id: scrum.task.id,
+						projectId: project.id
+					}
+				},
+				data: { content }
+			});
+		} else {
+			await prisma.scrum.update({
+				where: {
+					id_projectId: {
+						projectId: project.id,
+						id
+					}
+				},
+				data: { content }
+			});
+		}
+
+		throw redirect(302, `/scrum#scrum-${id}`);
 	}
 };

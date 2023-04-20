@@ -27,7 +27,7 @@ export const actions: Actions = {
 
 		// TODO: Handle name collisions
 		await prisma.member.update({
-			where: { id: member.id },
+			where: { login: member.login },
 			data: { name }
 		});
 
@@ -49,7 +49,7 @@ export const actions: Actions = {
 		await clearAvatar(member.avatar);
 
 		await prisma.member.update({
-			where: { id: member.id },
+			where: { login: member.login },
 			data: { avatar }
 		});
 
@@ -64,7 +64,7 @@ export const actions: Actions = {
 		await clearAvatar(member.avatar);
 
 		await prisma.member.update({
-			where: { id: member.id },
+			where: { login: member.login },
 			data: { avatar }
 		});
 

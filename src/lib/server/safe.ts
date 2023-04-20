@@ -1,4 +1,4 @@
-import type { Member, Issue, Comment, Project, Invite } from '@prisma/client';
+import type { Member, Scrum, Task, Comment, Project, Invite, Assignee } from '@prisma/client';
 
 // TODO: figure out how to type these
 export type SafeInvite<A extends symbol | string, B extends symbol | string> = {
@@ -37,82 +37,124 @@ export function safeInvite<
 	} as SafeInvite<A, B>;
 }
 
-/// ISSUE
+/// SCRUM
 
-export type SafeIssue<
+export type SafeScrum<
 	A extends symbol | string,
 	B extends symbol | string,
 	C extends symbol | string,
 	D extends symbol | string,
 	E extends symbol | string,
-	F extends symbol | string,
-	G extends symbol | string
+	F extends symbol | string
 > = {
-	id: number;
-	author: Omit<SafeMember<A, B>, A>;
-	assignee?: Omit<SafeMember<C, D>, C>;
-	title: string;
-	createdAt: Date;
-	closedAt?: Date;
-	comments: Omit<SafeComment<F, G>, E>[];
+	id: string;
+	task?: Omit<SafeTask<B, C, D, E, F>, A>;
+	content?: string;
+	column: number;
 };
 
-export type InputIssue<
+export type InputScrum<
 	A extends symbol | string,
 	B extends symbol | string,
 	C extends symbol | string,
 	D extends symbol | string,
 	E extends symbol | string,
-	F extends symbol | string,
-	G extends symbol | string
-> = Issue & {
-	author: Omit<InputMember<A, B>, A>;
-	assignee?: Omit<InputMember<C, D>, C>;
-	comments: Omit<InputComment<F, G>, E>[];
+	F extends symbol | string
+> = Scrum & {
+	task?: Omit<InputTask<B, C, D, E, F>, A>;
 };
 
-export function safeIssue<
+export function safeScrum<
 	T extends symbol | string,
 	A extends symbol | string,
 	B extends symbol | string,
 	C extends symbol | string,
 	D extends symbol | string,
 	E extends symbol | string,
-	F extends symbol | string,
-	G extends symbol | string
->(issue: Omit<InputIssue<A, B, C, D, E, F, G>, T>): Omit<SafeIssue<A, B, C, D, E, F, G>, T>;
-export function safeIssue<
+	F extends symbol | string
+>(issue: Omit<InputScrum<A, B, C, D, E, F>, T>): Omit<SafeScrum<A, B, C, D, E, F>, T>;
+export function safeScrum<
 	T extends symbol | string,
 	A extends symbol | string,
 	B extends symbol | string,
 	C extends symbol | string,
 	D extends symbol | string,
 	E extends symbol | string,
-	F extends symbol | string,
-	G extends symbol | string
->(
-	issue?: Omit<InputIssue<A, B, C, D, E, F, G>, T>
-): Omit<SafeIssue<A, B, C, D, E, F, G>, T> | undefined {
-	if (!issue) return;
+	F extends symbol | string
+>(scrum?: Omit<InputScrum<A, B, C, D, E, F>, T>): Omit<SafeScrum<A, B, C, D, E, F>, T> | undefined {
+	if (!scrum) return;
 
-	const _issue = issue as InputIssue<A, B, C, D, E, F, G>;
+	const _scrum = scrum as InputScrum<A, B, C, D, E, F>;
 
 	return {
-		id: _issue.id,
-		author: safeMember<A, B>(_issue.author),
+		id: _scrum.id,
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		assignee: safeMember<C, D>(_issue.assignee!),
-		title: _issue.title,
-		createdAt: _issue.createdAt,
-		closedAt: _issue.closedAt,
-		comments: _issue.comments?.map(safeComment<E, F, G>)
-	} as SafeIssue<A, B, C, D, E, F, G>;
+		task: safeTask<A, B, C, D, E, F>(_scrum.task!),
+		content: _scrum.content,
+		column: _scrum.column
+	} as Omit<SafeScrum<A, B, C, D, E, F>, T>;
+}
+
+/// TASK
+
+export type SafeTask<
+	A extends symbol | string,
+	B extends symbol | string,
+	C extends symbol | string,
+	D extends symbol | string,
+	E extends symbol | string
+> = {
+	id: string;
+	assignees: Omit<SafeMember<A, B>, A>[];
+	content: string;
+	comments: Omit<SafeComment<D, E>, C>[];
+	done: boolean;
+};
+
+export type InputTask<
+	A extends symbol | string,
+	B extends symbol | string,
+	C extends symbol | string,
+	D extends symbol | string,
+	E extends symbol | string
+> = Task & {
+	assignees: (Assignee & { member: Omit<InputMember<A, B>, A> })[];
+	comments: Omit<InputComment<D, E>, C>[];
+};
+
+export function safeTask<
+	T extends symbol | string,
+	A extends symbol | string,
+	B extends symbol | string,
+	C extends symbol | string,
+	D extends symbol | string,
+	E extends symbol | string
+>(issue: Omit<InputTask<A, B, C, D, E>, T>): Omit<SafeTask<A, B, C, D, E>, T>;
+export function safeTask<
+	T extends symbol | string,
+	A extends symbol | string,
+	B extends symbol | string,
+	C extends symbol | string,
+	D extends symbol | string,
+	E extends symbol | string
+>(task?: Omit<InputTask<A, B, C, D, E>, T>): Omit<SafeTask<A, B, C, D, E>, T> | undefined {
+	if (!task) return;
+
+	const _task = task as InputTask<A, B, C, D, E>;
+
+	return {
+		id: _task.id,
+		assignees: _task.assignees?.map((a) => safeMember<A, B>(a.member)),
+		content: _task.content,
+		comments: _task.comments?.map(safeComment<C, D, E>),
+		done: _task.done
+	} as SafeTask<A, B, C, D, E>;
 }
 
 /// COMMENT
 
 export type SafeComment<A extends symbol | string, B extends symbol | string> = {
-	id: number;
+	id: string;
 	author: Omit<SafeMember<A, B>, A>;
 	content: string;
 	createdAt: Date;
@@ -147,10 +189,9 @@ export function safeComment<
 /// MEMBER
 
 export type SafeMember<A extends symbol | string, B extends symbol | string> = {
-	id: number;
+	id: string;
 	role: number;
 	name: string;
-	createdAt: Date;
 	project: Omit<Omit<SafeProject<A, B>, 'members'>, B>;
 	avatar: string;
 };
@@ -173,7 +214,6 @@ export function safeMember<A extends symbol | string, B extends symbol | string>
 		id: _member.id,
 		role: _member.role,
 		name: _member.name,
-		createdAt: _member.createdAt,
 		project: safeProject<A, B>(_member.project as Omit<InputProject<A, B>, B>),
 		avatar: _member.avatar
 	} as SafeMember<A, B>;
@@ -182,7 +222,7 @@ export function safeMember<A extends symbol | string, B extends symbol | string>
 /// PROJECT
 
 export type SafeProject<A extends symbol | string, B extends symbol | string> = {
-	id: number;
+	id: string;
 	name: string;
 	members: Omit<Omit<SafeMember<A, B>, 'project'>, A>[];
 };

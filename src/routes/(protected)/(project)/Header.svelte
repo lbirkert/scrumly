@@ -3,7 +3,7 @@
 
 	import { Member, type SafeMember } from '$lib/member';
 
-	export let member: SafeMember;
+	export let member: SafeMember<'', ''>;
 </script>
 
 <header>

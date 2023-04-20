@@ -1,7 +1,7 @@
 import type { PageServerLoad } from './$types';
 
 import { prisma } from '$lib/server/prisma';
-import { safeIssue, type SafeIssue } from '$lib/server/safe';
+import { safeTask } from '$lib/server/safe';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	const { project } = locals;
@@ -13,13 +13,16 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 		page = 0;
 	}
 
-	const issues = await prisma.issue.findMany({
+	const tasks = await prisma.task.findMany({
 		where: {
 			projectId: project.id
 		},
 		include: {
-			author: true,
-			assignee: true,
+			assignees: {
+				include: {
+					member: true
+				}
+			},
 			comments: {
 				include: {
 					author: true
@@ -31,7 +34,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 	});
 
 	return {
-		issues: issues.map(safeIssue) as SafeIssue[],
+		tasks: tasks.map((t) => safeTask<'', 'project', '', '', 'project', ''>(t)),
 		page
 	};
 };

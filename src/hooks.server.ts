@@ -23,7 +23,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 				const member = (await prisma.member.findUnique({
 					where: {
-						id: jwtMember.id
+						login: jwtMember.login
 					},
 					include: {
 						project: true

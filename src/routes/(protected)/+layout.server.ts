@@ -11,7 +11,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
 	}
 
 	return {
-		member: safeMember(member),
+		member: safeMember<'project', ''>(member),
 		project: safeProject(project)
 	};
 };

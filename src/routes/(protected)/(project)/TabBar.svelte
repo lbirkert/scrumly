@@ -27,8 +27,8 @@
 			name: 'Scrum'
 		},
 		{
-			pathname: '/issues',
-			name: 'Issues'
+			pathname: '/tasks',
+			name: 'Tasks'
 		},
 		{
 			pathname: '/members',

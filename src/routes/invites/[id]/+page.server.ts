@@ -1,6 +1,6 @@
 import type { PageServerLoad, Actions } from './$types';
 
-import { safeInvite, type InputInvite } from '$lib/server/safe';
+import { safeInvite } from '$lib/server/safe';
 
 import { prisma } from '$lib/server/prisma';
 import { secret } from '$lib/server/secret';
@@ -17,26 +17,21 @@ async function findInvite<T extends Prisma.InviteInclude | undefined>(
 	params: { id: string },
 	include: T
 ) {
-	try {
-		const issue = await prisma.invite.findUnique({
-			where: { id: params.id },
-			include
-		});
+	const invite = await prisma.invite.findUnique({
+		where: { id: params.id },
+		include
+	});
 
-		if (!issue) {
-			throw new Error();
-		}
-
-		return issue;
-	} catch (e) {
-		console.error(e);
+	if (!invite) {
 		throw error(404, 'Not found');
 	}
+
+	return invite;
 }
 
 export const load: PageServerLoad = async ({ params }) => {
 	return {
-		invite: safeInvite((await findInvite(params, { creator: true, project: true })) as InputInvite)
+		invite: safeInvite(await findInvite(params, { creator: true, project: true }))
 	};
 };
 
@@ -50,22 +45,21 @@ export const actions: Actions = {
 			return fail(400, { error: "You can't join this organization" });
 		}
 
-		const login = secret();
-
 		// Generate default avatar
 		const avatar = await generateAvatar();
 
-		const member = await prisma.member.create({
+		const { login } = await prisma.member.create({
 			data: {
+				id: secret(5),
 				projectId: invite.projectId,
+				login: secret(),
 				role: 2,
 				name,
-				avatar,
-				login
+				avatar
 			}
 		});
 
-		const _token = jwt.sign({ id: member.id }, JWT_SECRET, {
+		const _token = jwt.sign({ login }, JWT_SECRET, {
 			expiresIn: '1d'
 		});
 

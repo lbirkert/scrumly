@@ -45,7 +45,11 @@ export async function clearAvatar(avatar: string) {
 export async function unlinkAvatar(avatar: string, size: string) {
 	const path = join(AVATARS_DIR, avatar + '_' + size);
 
-	await unlink(path);
+	try {
+		await unlink(path);
+	} catch (e) {
+		console.error(e);
+	}
 }
 
 export async function writeAvatar(

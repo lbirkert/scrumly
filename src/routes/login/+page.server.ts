@@ -21,7 +21,7 @@ export const actions: Actions = {
 			});
 		}
 
-		const token = jwt.sign({ id: member.id }, JWT_SECRET, {
+		const token = jwt.sign({ login: member.login }, JWT_SECRET, {
 			expiresIn: '1d'
 		});
 

@@ -8,8 +8,10 @@
 	import { Member } from '$lib/member';
 	import { Markdown } from '$lib/markdown';
 
-	export let comment: SafeComment;
-	export let member: SafeMember;
+	import Editor from '$lib/Editor.svelte';
+
+	export let comment: SafeComment<'project', ''>;
+	export let member: Omit<SafeMember<'project', ''>, 'project'>;
 	export let edit: boolean;
 
 	function copy() {
@@ -22,18 +24,14 @@
 <li>
 	<div id="comment-{comment.id}" />
 	{#if edit}
-		<header>Edit Comment</header>
-
-		<form method="POST" action="?/comment_update" use:enhance>
-			<input value={comment.id} name="id" />
-
-			<textarea required name="content">{comment.content}</textarea>
-
-			<div>
-				<a class="button" style="--color: lightcoral" href="?#comment-{comment.id}">Cancel</a>
-				<button style="--color: lightgreen">Update Comment</button>
-			</div>
-		</form>
+		<Editor
+			id={comment.id}
+			content={comment.content}
+			cancel_url="?#comment-{comment.id}"
+			action="?/comment_update"
+		>
+			<header>Edit Comment</header>
+		</Editor>
 	{:else}
 		<header>
 			<span>
@@ -47,7 +45,7 @@
 			<label for="menu-{comment.id}">+</label>
 		</header>
 
-		<input type="checkbox" id="menu-{comment.id}" />
+		<input class="hide" type="checkbox" id="menu-{comment.id}" />
 		<menu>
 			<a class="button" href="#comment-{comment.id}" on:click|preventDefault={copy}>Copy link</a>
 			{#if comment.author.id === member.id}
@@ -55,7 +53,7 @@
 					>Edit</a
 				>
 				<form method="POST" action="?/comment_delete" use:enhance>
-					<input value={comment.id} name="id" />
+					<input class="hide" value={comment.id} name="id" />
 					<button style="--color: lightcoral">Delete</button>
 				</form>
 			{/if}
@@ -99,7 +97,6 @@
 		user-select: none;
 	}
 
-	input,
 	menu {
 		display: none;
 	}
@@ -122,8 +119,7 @@
 		flex: 1;
 	}
 
-	li > span,
-	li > form {
+	li > span {
 		margin-top: 2px;
 		padding: 10px 15px;
 		display: block;
@@ -133,15 +129,5 @@
 	menu .button {
 		border: none;
 		width: 100%;
-	}
-
-	textarea {
-		width: 100%;
-		margin-bottom: 10px;
-	}
-
-	form > div {
-		display: flex;
-		column-gap: 20px;
 	}
 </style>

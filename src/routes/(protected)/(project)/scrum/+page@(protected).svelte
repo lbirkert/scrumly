@@ -2,47 +2,88 @@
 	import SEO from '$lib/SEO.svelte';
 
 	import Header from '../Header.svelte';
-	import Category from './Category.svelte';
+	import Column from './Column.svelte';
 	import type { PageData } from './$types';
-	import * as devalue from 'devalue';
 
 	export let data: PageData;
 
-	const todo = data.issues.filter((i) => !i.assignee && !i.closedAt);
-	const doing = data.issues.filter((i) => i.assignee && !i.closedAt);
-	const done = data.issues.filter((i) => i.closedAt);
-
 	// TODO: make customizable
-	let categories = [
-		{ name: 'TODO', issues: todo },
-		{ name: 'Doing', issues: doing },
-		{ name: 'Done', issues: done }
+	let columns = [
+		{ name: 'Story', handle: (v) => v },
+		{
+			name: 'ToDo',
+			async handle(v) {
+				if (v.task) {
+					await fetch(`/tasks/${v.task.id}?/unassign`, {
+						method: 'POST',
+						body: new URLSearchParams()
+					});
+					await fetch(`/tasks/${v.task.id}?/done`, {
+						method: 'POST',
+						body: new URLSearchParams({ done: 0 })
+					});
+					v.task.assignees = v.task.assignees.filter((a) => a.id !== data.member.id);
+					v.task.done = false;
+				}
+				return v;
+			}
+		},
+		{
+			name: 'Doing',
+			async handle(v) {
+				if (v.task) {
+					await fetch(`/tasks/${v.task.id}?/assign`, {
+						method: 'POST',
+						body: new URLSearchParams()
+					});
+					await fetch(`/tasks/${v.task.id}?/done`, {
+						method: 'POST',
+						body: new URLSearchParams({ done: 0 })
+					});
+					if (!v.task.assignees.some((a) => a.id === data.member.id)) {
+						v.task.assignees.push(data.member);
+						v.task.done = false;
+					}
+				}
+				return v;
+			}
+		},
+		{
+			name: 'Done',
+			async handle(v) {
+				if (v.task) {
+					await fetch(`/tasks/${v.task.id}?/done`, {
+						method: 'POST',
+						body: new URLSearchParams({ done: 1 })
+					});
+					v.task.done = true;
+				}
+				return v;
+			}
+		}
 	];
 
-	export let dragIssue = -1;
+	$: columns = columns.map((c, i) => ((c.scrums = data.scrums.filter((s) => s.column === i)), c));
+
+	export let dragScrum = -1;
 	export let dragFirst = -1;
 	export let dragLast = -1;
 
 	async function onDragEnd() {
-		const firstIssues = categories[dragFirst].issues;
-		const lastIssues = categories[dragLast].issues;
+		const firstScrums = columns[dragFirst].scrums;
+		const lastScrums = columns[dragLast].scrums;
 
-		const issue = firstIssues[dragIssue];
+		const scrum = firstScrums[dragScrum];
 
-		const result = await fetch('', {
+		await fetch('?/move', {
 			method: 'POST',
-			body: new URLSearchParams({ id: issue.id, to: dragLast })
+			body: new URLSearchParams({ id: scrum.id, to: dragLast })
 		});
 
-		const changes = devalue.parse((await result.json()).data);
+		firstScrums.splice(dragScrum, 1);
+		lastScrums.push(await columns[dragLast].handle(scrum));
 
-		const newIssue = { ...issue, ...changes };
-
-		firstIssues.splice(dragIssue, 1);
-		lastIssues.push(newIssue);
-
-		// Trigger rerender
-		categories = categories;
+		data.scrums[data.scrums.findIndex((a) => a.id === scrum.id)].column = dragLast;
 	}
 </script>
 
@@ -52,14 +93,14 @@
 	<Header member={data.member} />
 
 	<ul>
-		{#each categories as category, i}
+		{#each columns as column, i}
 			<li>
-				<Category
+				<Column
 					id={i}
-					name={category.name}
-					issues={category.issues}
+					name={column.name}
+					scrums={column.scrums}
 					{onDragEnd}
-					bind:dragIssue
+					bind:dragScrum
 					bind:dragLast
 					bind:dragFirst
 				/>
@@ -80,11 +121,10 @@
 	}
 
 	li {
-		min-width: 450px;
+		min-width: 400px;
 		flex: 1;
-		border: 1px solid rgba(255, 255, 255, 0.3);
 		border-radius: 10px;
-		padding: 20px;
+		padding: 10px;
 		display: flex;
 		flex-direction: column;
 	}
