@@ -15,6 +15,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 	}
 
 	return {
-		project: safeProject(project)
+		project: safeProject<'', ''>(project)
 	};
 };

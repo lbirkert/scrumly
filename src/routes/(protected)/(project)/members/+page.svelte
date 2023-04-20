@@ -11,7 +11,7 @@
 
 <main>
 	<form>
-		<input placeholder="Search" />
+		<input placeholder="Search" name="q" />
 		<a class="button" style="--color: lightgreen" href="/members/new"> Invite </a>
 	</form>
 	<ul>
