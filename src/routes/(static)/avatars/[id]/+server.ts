@@ -4,7 +4,7 @@ import { error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async ({ params, url }) => {
-	const size = url.searchParams.get('s') || '128';
+	const size = url.searchParams.get('s') || 'l';
 
 	let mime: string;
 	let content: Buffer;
