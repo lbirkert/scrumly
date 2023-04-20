@@ -62,5 +62,32 @@ export const actions: Actions = {
 		});
 
 		throw redirect(302, `/scrum#scrum-${id}`);
+	},
+	async import({ request, locals }) {
+		const { project } = locals;
+
+		const { id, column } = await form({ id: 'string', column: 'number' } as const, request);
+
+		const scrum = await prisma.scrum.create({
+			data: {
+				id: secret(5),
+				project: {
+					connect: {
+						id: project.id
+					}
+				},
+				task: {
+					connect: {
+						id_projectId: {
+							projectId: project.id,
+							id
+						}
+					}
+				},
+				column
+			}
+		});
+
+		throw redirect(302, `/scrum#scrum-${scrum.id}`);
 	}
 };

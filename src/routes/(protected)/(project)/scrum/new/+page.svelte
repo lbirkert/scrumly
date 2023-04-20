@@ -24,6 +24,14 @@
 			<button style="--color: yellow">Create Task</button>
 		</form>
 	</details>
+	<details open>
+		<summary>Import task node</summary>
+		<form action="?/import" method="post" use:enhance>
+			<input name="id" placeholder="id" />
+			<input name="column" class="hide" value={column} />
+			<button style="--color: hotpink">Import Task</button>
+		</form>
+	</details>
 </main>
 
 <style>
