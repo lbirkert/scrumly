@@ -147,3 +147,7 @@ ul {
 .hidejs {
 	display: none;
 }
+
+.showjs {
+	display: block;
+}

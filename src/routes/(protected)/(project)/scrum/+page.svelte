@@ -1,11 +1,13 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
 
-	import Header from '../Header.svelte';
 	import Column from './Column.svelte';
 	import type { PageData } from './$types';
+	import type { SafeScrum } from "$lib/server/safe";
 
 	export let data: PageData;
+
+	type Scrum = SafeScrum<"comments", "project", "", "", "", "">;
 
 	// TODO: make customizable
 	let columns = [
@@ -20,7 +22,7 @@
 					});
 					await fetch(`/tasks/${v.task.id}?/done`, {
 						method: 'POST',
-						body: new URLSearchParams({ done: 0 })
+						body: new URLSearchParams({ done: "0" })
 					});
 					v.task.assignees = v.task.assignees.filter((a) => a.id !== data.member.id);
 					v.task.done = false;
@@ -38,7 +40,7 @@
 					});
 					await fetch(`/tasks/${v.task.id}?/done`, {
 						method: 'POST',
-						body: new URLSearchParams({ done: 0 })
+						body: new URLSearchParams({ done: "0" })
 					});
 					if (!v.task.assignees.some((a) => a.id === data.member.id)) {
 						v.task.assignees.push(data.member);
@@ -54,14 +56,14 @@
 				if (v.task) {
 					await fetch(`/tasks/${v.task.id}?/done`, {
 						method: 'POST',
-						body: new URLSearchParams({ done: 1 })
+						body: new URLSearchParams({ done: "1" })
 					});
 					v.task.done = true;
 				}
 				return v;
 			}
 		}
-	];
+	] as { scrums: Scrum[], handle: (v: Scrum) => Promise<Scrum>, name: string }[];
 
 	$: columns = columns.map((c, i) => ((c.scrums = data.scrums.filter((s) => s.column === i)), c));
 
@@ -77,21 +79,19 @@
 
 		await fetch('?/move', {
 			method: 'POST',
-			body: new URLSearchParams({ id: scrum.id, to: dragLast })
+			body: new URLSearchParams({ id: scrum.id, to: dragLast.toString() })
 		});
 
 		firstScrums.splice(dragScrum, 1);
 		lastScrums.push(await columns[dragLast].handle(scrum));
 
-		data.scrums[data.scrums.findIndex((a) => a.id === scrum.id)].column = dragLast;
+		data.scrums[data.scrums.findIndex((s) => s.id === scrum.id)].column = dragLast;
 	}
 </script>
 
 <SEO title="Scrum" />
 
 <div>
-	<Header member={data.member} />
-
 	<ul>
 		{#each columns as column, i}
 			<li>
@@ -116,7 +116,7 @@
 		overflow-y: hidden;
 		min-height: unset;
 		column-gap: 10px;
-		padding: 20px;
+		padding: 10px;
 		flex: 1;
 	}
 
@@ -124,7 +124,7 @@
 		min-width: 400px;
 		flex: 1;
 		border-radius: 10px;
-		padding: 10px;
+		padding: 5px;
 		display: flex;
 		flex-direction: column;
 	}
@@ -132,7 +132,7 @@
 	div {
 		display: flex;
 		flex-direction: column;
-		height: 100vh;
+		height: calc(100vh - 42px);
 		overflow: hidden;
 	}
 </style>

@@ -1,17 +1,17 @@
 import type { PageServerLoad, Actions } from './$types';
 
 import { form } from '$lib/server/form';
-import { safeMember, safeProject, safeScrum } from '$lib/server/safe';
+import { safeScrum } from '$lib/server/safe';
 import { prisma } from '$lib/server/prisma';
 
 import { error, redirect } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	const { member, project } = locals;
+	const { project } = locals;
 
 	const scrums = await prisma.scrum.findMany({
 		where: {
-			projectId: member.projectId
+			projectId: project.id
 		},
 		include: {
 			task: {
@@ -27,9 +27,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	});
 
 	return {
-		member: safeMember(member),
-		project: safeProject(project),
-		scrums: scrums.map(safeScrum)
+		scrums: scrums.map(s => safeScrum<"", "comments", "project", "", "", "", "">(s!))
 	};
 };
 

@@ -9,6 +9,7 @@
 	import { Markdown } from '$lib/markdown';
 
 	import Editor from '$lib/Editor.svelte';
+	import NodeHeader from '$lib/NodeHeader.svelte';
 
 	export let comment: SafeComment<'project', ''>;
 	export let member: Omit<SafeMember<'project', ''>, 'project'>;
@@ -24,16 +25,15 @@
 <li>
 	<div id="comment-{comment.id}" />
 	{#if edit}
+		<NodeHeader>Edit Comment</NodeHeader>
 		<Editor
 			id={comment.id}
 			content={comment.content}
 			cancel_url="?#comment-{comment.id}"
 			action="?/comment_update"
-		>
-			<header>Edit Comment</header>
-		</Editor>
+		/>
 	{:else}
-		<header>
+		<NodeHeader>
 			<span>
 				<Member member={comment.author} />
 				commented
@@ -43,7 +43,7 @@
 			</span>
 
 			<label for="menu-{comment.id}">+</label>
-		</header>
+		</NodeHeader>
 
 		<input class="hide" type="checkbox" id="menu-{comment.id}" />
 		<menu>
@@ -74,29 +74,19 @@
 		position: relative;
 	}
 
-	header {
-		display: flex;
-		align-items: center;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-		border-radius: 5px 5px 0 0;
-		background-color: #111;
-		padding: 10px;
-		font-size: 14px;
-	}
 
-	header > span {
+	span {
 		display: inline-flex;
 		align-items: center;
 		column-gap: 5px;
 		width: 100%;
 	}
 
-	header > label {
+	label {
 		cursor: pointer;
 		margin-left: auto;
 		user-select: none;
 	}
-
 	menu {
 		display: none;
 	}

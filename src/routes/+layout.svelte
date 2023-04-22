@@ -15,6 +15,10 @@
 		.hidejs {
 			display: block;
 		}
+
+		.showjs {
+			display: none;
+		}
 	</style>
 </noscript>
 

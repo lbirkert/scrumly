@@ -48,7 +48,7 @@
 
 <style>
 	pre {
-		padding: 15px 15px;
+		padding: 10px 10px;
 		background-color: #111;
 		border-radius: 5px;
 		border: 1px solid rgba(255, 255, 255, 0.3);

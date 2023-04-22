@@ -4,8 +4,10 @@
 	import { Member, type SafeMember } from '$lib/member';
 
 	export let member: SafeMember<'', ''>;
+	export let nologin: boolean = false;
 </script>
 
+{#if !nologin}
 <header>
 	<form action="/logout" method="POST">
 		<p>
@@ -15,6 +17,7 @@
 		<button style="--color: lightcoral">Logout</button>
 	</form>
 </header>
+{/if}
 
 <TabBar />
 

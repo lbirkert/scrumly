@@ -3,6 +3,7 @@
 	import { Markdown } from '$lib/markdown';
 	import Task from '$lib/Task.svelte';
 	import Editor from '$lib/Editor.svelte';
+	import NodeHeader from '$lib/NodeHeader.svelte';
 
 	import { enhance } from '$app/forms';
 
@@ -11,7 +12,7 @@
 	export let id: number;
 	export let name: string;
 
-	export let scrums: SafeScrum<'', '', '', '', '', ''>[];
+	export let scrums: SafeScrum<'comments', 'project', '', '', '', ''>[];
 
 	export let dragLast: number;
 	export let dragFirst: number;
@@ -19,18 +20,22 @@
 	export let onDragEnd: () => void;
 </script>
 
-<h3>{name}</h3>
+<header>
+	<h3>{name}</h3>
+	<a href="/scrum/new?column={id}">+ New</a>
+</header>
 <ul on:dragover={() => (dragLast = id)} on:dragend={() => dragLast != id && onDragEnd()}>
 	{#each scrums as scrum, i}
-		<li on:dragstart={() => ((dragScrum = i), (dragFirst = id))} draggable={true}>
+		{@const edit = $page.url.searchParams.get('edit') === scrum.id}
+		{@const del = $page.url.searchParams.get('delete') === scrum.id}
+		<li on:dragstart={() => ((dragScrum = i), (dragFirst = id))} draggable={!edit && !del}>
 			<div id="scrum-{scrum.id}" class="hide" />
 
-			{#if $page.url.searchParams.get('edit') === scrum.id}
-				<Editor id={scrum.id} content={scrum.content || scrum.task?.content || ''}>
-					<header>Edit Scrum</header>
-				</Editor>
-			{:else if $page.url.searchParams.get('delete') === scrum.id}
-				<header>Delete Scrum</header>
+			{#if edit}
+				<NodeHeader>Edit Scrum</NodeHeader>
+				<Editor id={scrum.id} content={scrum.content || scrum.task?.content || ''}/>
+			{:else if del}
+				<NodeHeader>Delete Scrum</NodeHeader>
 
 				<form method="POST" action="?/delete" use:enhance>
 					<h4>Are you sure?</h4>
@@ -42,10 +47,10 @@
 					</footer>
 				</form>
 			{:else}
-				<header>
+				<NodeHeader>
 					<a href="?edit={scrum.id}">Edit</a>
 					<a href="?delete={scrum.id}">Delete</a>
-				</header>
+				</NodeHeader>
 
 				{#if scrum.task}
 					<div><Task task={scrum.task} /></div>
@@ -56,11 +61,14 @@
 		</li>
 	{/each}
 </ul>
-<a href="/scrum/new?column={id}">+ New</a>
 
 <style>
-	h3 {
-		margin-bottom: 20px;
+	header {
+		padding-bottom: 5px;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 	}
 
 	ul {
@@ -68,30 +76,22 @@
 		flex-direction: column;
 		row-gap: 10px;
 		height: 100%;
+		padding-top: 10px;
 		overflow-y: scroll;
 	}
 
-	li {
-		cursor: pointer;
-		user-select: none;
+	li[draggable="true"] {
+		cursor: move;
+	}
 
+	li {
+		user-select: none;
 		border: 1px solid rgba(255, 255, 255, 0.3);
 		border-radius: 5px;
 	}
 
-	header {
-		display: flex;
-		column-gap: 10px;
-		align-items: center;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-		border-radius: 5px 5px 0 0;
-		background-color: #111;
-		padding: 10px;
-		font-size: 14px;
-	}
-
 	div {
-		padding: 15px;
+		padding: 10px;
 	}
 
 	form {

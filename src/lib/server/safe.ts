@@ -62,7 +62,7 @@ export type InputScrum<
 	E extends symbol | string,
 	F extends symbol | string
 > = Scrum & {
-	task?: Omit<InputTask<B, C, D, E, F>, A>;
+	task?: Omit<InputTask<B, C, D, E, F>, A> | null;
 };
 
 export function safeScrum<
