@@ -58,7 +58,7 @@ const converters = {
 
 		const findTask = (id: string): Convertable => {
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			const task: Convertable = src.tasks.find((t: Task) => (t.id = id))!;
+			const task: Convertable = src.tasks.find((t: Task) => (t.id === id))!;
 			task.assignees = src.assignees
 				.filter((a: Assignee) => a.taskId === task.id)
 				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
