@@ -4,7 +4,7 @@
 	import { Member, type SafeMember } from '$lib/member';
 
 	export let member: SafeMember<'', ''>;
-	export let nologin: boolean = false;
+	export let nologin = false;
 </script>
 
 {#if !nologin}

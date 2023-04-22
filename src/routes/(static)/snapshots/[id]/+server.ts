@@ -2,6 +2,7 @@ import { error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
 import { SNAPSHOTS_DIR } from '$env/static/private';
+import type { Member, Task, Assignee, Scrum, Comment } from '@prisma/client';
 
 import { readFile, writeFile } from 'fs/promises';
 import { join } from 'path';
@@ -32,6 +33,14 @@ export const GET: RequestHandler = async ({ params }) => {
 	return new Response(new Blob([content], { type: 'application/json' }));
 };
 
+type SnapshotDump = {
+	members: Member[];
+	comments: Comment[];
+	assignees: Assignee[];
+	tasks: Task[];
+	scrums: Scrum[];
+};
+
 const converters = {
 	async scrumblr(src) {
 		const colors = ['yellow', 'green', 'blue', 'white'];
@@ -47,22 +56,38 @@ const converters = {
 
 		const cardsPerColumn = Math.floor((height - cardOffsetY) / cardHeight);
 
-		const findTask = (id: string) => {
-			const task = src.tasks.find((t: any) => (t.id = id));
+		const findTask = (id: string): Convertable => {
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			const task: Convertable = src.tasks.find((t: Task) => (t.id = id))!;
 			task.assignees = src.assignees
-				.filter((a: any) => a.taskId === task.id)
-				.map((a: any) => src.members.find((m: any) => a.memberId === m.id).name);
+				.filter((a: Assignee) => a.taskId === task.id)
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				.map((a: Assignee) => src.members.find((m: Member) => a.memberId === m.id)!.name);
 			return task;
 		};
 
-		const columns: any[][] = src.scrums.reduce(
-			(p: any[][], s: any) => (p[s.column].push(s.taskId ? findTask(s.taskId) : s), p),
+		type Convertable = { id: string; assignees?: string[]; content: string };
+
+		const columns: Convertable[][] = src.scrums.reduce(
+			(p: Convertable[][], s: Scrum) => (
+				p[s.column].push(s.taskId ? findTask(s.taskId) : (s as Convertable)), p
+			),
 			[[], [], [], []]
 		);
 
-		const cards = columns.reduce(
-			(p: any[], c: any[], x) => (
-				c.forEach((s: any, y) =>
+		type Card = {
+			x: number;
+			y: number;
+			text: string;
+			id: string;
+			rot: number;
+			colour: string;
+			sticker: string[] | null;
+		};
+
+		const cards: Card[] = columns.reduce(
+			(p: Card[], c: Convertable[], x) => (
+				c.forEach((s: Convertable, y) =>
 					p.push({
 						x: x * (width / 4) + cardOffsetX + Math.floor(y / cardsPerColumn) * cardWidth,
 						y: (y % cardsPerColumn) * cardHeight + cardOffsetY,
@@ -85,4 +110,4 @@ const converters = {
 			cards
 		});
 	}
-} as { [key: string]: (src: any) => Promise<string> };
+} as { [key: string]: (src: SnapshotDump) => Promise<string> };

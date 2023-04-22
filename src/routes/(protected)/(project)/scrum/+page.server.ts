@@ -27,6 +27,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	});
 
 	return {
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		scrums: scrums.map((s) => safeScrum<'', 'comments', 'project', '', '', '', ''>(s!))
 	};
 };
