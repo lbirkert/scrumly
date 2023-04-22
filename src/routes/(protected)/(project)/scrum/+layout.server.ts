@@ -6,7 +6,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	return {
 		member: safeMember(member),
-		project: safeProject(project),
+		project: safeProject(project)
 	};
 };
-

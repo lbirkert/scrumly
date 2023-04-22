@@ -3,11 +3,11 @@
 
 	import Column from './Column.svelte';
 	import type { PageData } from './$types';
-	import type { SafeScrum } from "$lib/server/safe";
+	import type { SafeScrum } from '$lib/server/safe';
 
 	export let data: PageData;
 
-	type Scrum = SafeScrum<"comments", "project", "", "", "", "">;
+	type Scrum = SafeScrum<'comments', 'project', '', '', '', ''>;
 
 	// TODO: make customizable
 	let columns = [
@@ -22,7 +22,7 @@
 					});
 					await fetch(`/tasks/${v.task.id}?/done`, {
 						method: 'POST',
-						body: new URLSearchParams({ done: "0" })
+						body: new URLSearchParams({ done: '0' })
 					});
 					v.task.assignees = v.task.assignees.filter((a) => a.id !== data.member.id);
 					v.task.done = false;
@@ -40,7 +40,7 @@
 					});
 					await fetch(`/tasks/${v.task.id}?/done`, {
 						method: 'POST',
-						body: new URLSearchParams({ done: "0" })
+						body: new URLSearchParams({ done: '0' })
 					});
 					if (!v.task.assignees.some((a) => a.id === data.member.id)) {
 						v.task.assignees.push(data.member);
@@ -56,14 +56,14 @@
 				if (v.task) {
 					await fetch(`/tasks/${v.task.id}?/done`, {
 						method: 'POST',
-						body: new URLSearchParams({ done: "1" })
+						body: new URLSearchParams({ done: '1' })
 					});
 					v.task.done = true;
 				}
 				return v;
 			}
 		}
-	] as { scrums: Scrum[], handle: (v: Scrum) => Promise<Scrum>, name: string }[];
+	] as { scrums: Scrum[]; handle: (v: Scrum) => Promise<Scrum>; name: string }[];
 
 	$: columns = columns.map((c, i) => ((c.scrums = data.scrums.filter((s) => s.column === i)), c));
 

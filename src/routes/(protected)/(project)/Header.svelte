@@ -8,15 +8,15 @@
 </script>
 
 {#if !nologin}
-<header>
-	<form action="/logout" method="POST">
-		<p>
-			Logged in as
-			<Member {member} />
-		</p>
-		<button style="--color: lightcoral">Logout</button>
-	</form>
-</header>
+	<header>
+		<form action="/logout" method="POST">
+			<p>
+				Logged in as
+				<Member {member} />
+			</p>
+			<button style="--color: lightcoral">Logout</button>
+		</form>
+	</header>
 {/if}
 
 <TabBar />

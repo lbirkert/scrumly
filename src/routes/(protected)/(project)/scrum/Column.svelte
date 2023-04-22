@@ -33,7 +33,7 @@
 
 			{#if edit}
 				<NodeHeader>Edit Scrum</NodeHeader>
-				<Editor id={scrum.id} content={scrum.content || scrum.task?.content || ''}/>
+				<Editor id={scrum.id} content={scrum.content || scrum.task?.content || ''} />
 			{:else if del}
 				<NodeHeader>Delete Scrum</NodeHeader>
 
@@ -80,7 +80,7 @@
 		overflow-y: scroll;
 	}
 
-	li[draggable="true"] {
+	li[draggable='true'] {
 		cursor: move;
 		cursor: grab;
 	}

@@ -27,7 +27,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	});
 
 	return {
-		scrums: scrums.map(s => safeScrum<"", "comments", "project", "", "", "", "">(s!))
+		scrums: scrums.map((s) => safeScrum<'', 'comments', 'project', '', '', '', ''>(s!))
 	};
 };
 

@@ -74,7 +74,6 @@
 		position: relative;
 	}
 
-
 	span {
 		display: inline-flex;
 		align-items: center;

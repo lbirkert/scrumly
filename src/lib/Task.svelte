@@ -3,7 +3,7 @@
 	import { Avatar } from '$lib/member';
 	import type { SafeTask } from '$lib/server/safe';
 
-	export let task: Omit<SafeTask<'project', '', '', 'project', ''>, "comments">;
+	export let task: Omit<SafeTask<'project', '', '', 'project', ''>, 'comments'>;
 </script>
 
 <Markdown source={task.content} />

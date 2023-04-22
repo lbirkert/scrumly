@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 
-	import { Markdown } from "$lib/markdown";
+	import { Markdown } from '$lib/markdown';
 
 	export let id: string | undefined = undefined;
 	export let content: string;
@@ -18,14 +18,16 @@
 	{/if}
 
 	<header class="showjs">
-		<button on:click|preventDefault={() => preview = false}>Write</button>
-		<button on:click|preventDefault={() => preview = true}>Preview</button>
+		<button on:click|preventDefault={() => (preview = false)}>Write</button>
+		<button on:click|preventDefault={() => (preview = true)}>Preview</button>
 	</header>
 
 	{#if preview}
-		<div><Markdown source={content}/></div>
+		<div><Markdown source={content} /></div>
 	{:else}
-		<textarea required name="content" on:change={e => content = e.target.value}>{content}</textarea>
+		<textarea required name="content" on:change={(e) => (content = e.target.value)}
+			>{content}</textarea
+		>
 	{/if}
 
 	<footer>
