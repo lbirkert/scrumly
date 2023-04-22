@@ -82,6 +82,7 @@
 
 	li[draggable="true"] {
 		cursor: move;
+		cursor: grab;
 	}
 
 	li {

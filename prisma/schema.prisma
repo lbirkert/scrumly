@@ -14,12 +14,12 @@ model Comment {
   id        String
   createdAt DateTime @default(now())
   content   String
-  author    Member   @relation(fields: [authorId, projectId], references: [id, projectId])
+  author    Member?   @relation(fields: [authorId, projectId], references: [id, projectId])
   task      Task     @relation(fields: [taskId, projectId], references: [id, projectId], onDelete: Cascade)
   project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   system    Boolean
 
-  authorId  String
+  authorId  String?
   taskId    String
   projectId String
 
