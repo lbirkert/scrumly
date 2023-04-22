@@ -33,7 +33,7 @@
 
 	$: {
 		const _lang = alias[lang] || lang;
-		if (prism.languages[_lang]) {
+		if (prism.languages && prism.languages[_lang]) {
 			formatted = (prism.highlight(text, prism.languages[_lang], _lang) as string)
 				.split('\n')
 				.map((l, i) => `<span class="line">${i}</span>${l}`)
