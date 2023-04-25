@@ -59,8 +59,8 @@
 
 		overflow-y: scroll;
 		scrollbar-width: none;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-		background-color: black;
+		border-bottom: var(--b1);
+		background-color: var(--bg);
 		height: 42px;
 	}
 
@@ -77,7 +77,8 @@
 	}
 
 	a:hover {
-		background: #222;
+		background: var(--tab-hover-bg);
+		color: var(--tab-hover-fg);
 	}
 
 	li {

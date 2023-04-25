@@ -19,7 +19,7 @@
 
 <style>
 	footer {
-		border-top: 1px solid rgba(255, 255, 255, 0.3);
+		border-top: var(--b1);
 		padding: 20px 10px;
 		text-align: center;
 	}

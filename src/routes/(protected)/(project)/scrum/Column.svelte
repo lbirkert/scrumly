@@ -87,7 +87,7 @@
 
 	li {
 		user-select: none;
-		border: 1px solid rgba(255, 255, 255, 0.3);
+		border: var(--b1);
 		border-radius: 5px;
 	}
 

@@ -9,6 +9,9 @@
 
 	import { mimes } from '$lib/constants';
 
+	import { browser } from '$app/environment';
+	import { writable } from 'svelte/store';
+
 	export let data: PageData;
 	export let form: ActionData;
 
@@ -17,6 +20,17 @@
 	let member: HTMLFormElement;
 
 	let generateDisabled = false;
+
+	let theme = writable('dark');
+
+	if (browser) {
+		theme.set(localStorage.getItem('theme') || 'dark');
+		console.log($theme);
+		theme.subscribe((t) => {
+			document.documentElement.className = t;
+			localStorage.setItem('theme', t);
+		});
+	}
 </script>
 
 <SEO title="Overview" />
@@ -91,6 +105,20 @@
 				/>
 				<button class="hidejs" style="--color: lightcyan">Update</button>
 			</span>
+		</label>
+	</form>
+	<form>
+		<h2>Appereance Settings</h2>
+
+		<label class="showjs">
+			Experimental: Light theme
+
+			<input
+				class="showjs"
+				type="checkbox"
+				on:change={() => ($theme = $theme === 'light' ? 'dark' : 'light')}
+				checked={$theme === 'light'}
+			/>
 		</label>
 	</form>
 </main>

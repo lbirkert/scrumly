@@ -3,7 +3,7 @@
 
 	import { Member, type SafeMember } from '$lib/member';
 
-	export let member: SafeMember<'', ''>;
+	export let member: Omit<SafeMember<'project', ''>, 'project'>;
 	export let nologin = false;
 </script>
 

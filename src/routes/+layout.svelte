@@ -22,4 +22,10 @@
 	</style>
 </noscript>
 
+<svelte:head>
+	<script>
+		document.documentElement.className = localStorage.getItem('theme') || 'dark';
+	</script>
+</svelte:head>
+
 <slot />

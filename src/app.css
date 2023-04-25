@@ -9,9 +9,43 @@ html {
 	font-family: 'Fira Mono', sans-serif;
 }
 
+:root {
+	--bg: black;
+	--fg: #aaa;
+	--on-fg: white;
+	--primary: white;
+	--on-primary: black;
+	--b1: 1px solid rgba(255, 255, 255, 0.3);
+
+	--input: #aaa;
+	--button: white;
+
+	--node-header: #111;
+
+	--tab-hover-fg: white;
+	--tab-hover-bg: #222;
+}
+
+html.light * {
+	--bg: white;
+	--fg: black;
+	--on-fg: white;
+	--primary: black;
+	--on-primary: white;
+	--b1: 1px solid rgba(0, 0, 0, 0.1);
+
+	--input: #aaa;
+	--button: black;
+
+	--node-header: white;
+
+	--tab-hover-fg: black;
+	--tab-hover-bg: #eee;
+}
+
 body {
-	background: black;
-	color: #aaa;
+	background: var(--bg);
+	color: var(--fg);
 	height: 100vh;
 }
 
@@ -20,7 +54,7 @@ h2,
 h3,
 h4,
 h5 {
-	color: white;
+	color: var(--primary);
 }
 
 form {
@@ -34,12 +68,12 @@ form label {
 	flex-direction: column;
 	row-gap: 10px;
 	font-size: 18px;
-	color: white;
+	color: var(--primary);
 }
 
 button,
 .button {
-	--color: white;
+	--color: var(--button);
 	border: 1px solid var(--color);
 	border-radius: 4px;
 	background: transparent;
@@ -57,7 +91,7 @@ button:active,
 .button:hover,
 .button:active {
 	background: var(--color);
-	color: black;
+	color: var(--on-primary);
 }
 
 button:disabled {
@@ -68,7 +102,7 @@ button:disabled {
 
 input,
 textarea {
-	--color: #aaa;
+	--color: var(--input);
 	border: 1px solid var(--color);
 	border-radius: 4px;
 	background: transparent;
@@ -115,7 +149,7 @@ span.close {
 }
 
 a {
-	color: white;
+	color: var(--primary);
 }
 
 .spacer {

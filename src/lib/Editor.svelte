@@ -40,8 +40,8 @@
 
 <style>
 	.active {
-		background-color: white;
-		color: black;
+		background-color: var(--primary);
+		color: var(--on-primary);
 	}
 
 	textarea {
@@ -61,10 +61,8 @@
 
 	div {
 		padding: 5px 10px;
-		border: 1px solid rgba(255, 255, 255, 0.2);
 		border-radius: 4px;
 		margin-bottom: 5px;
-		background-color: #050505;
 		min-height: 80px;
 	}
 </style>
