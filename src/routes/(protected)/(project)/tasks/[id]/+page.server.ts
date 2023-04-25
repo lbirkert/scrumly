@@ -8,6 +8,7 @@ import { prisma } from '$lib/server/prisma';
 import { form } from '$lib/server/form';
 import { secret } from '$lib/server/secret';
 import { safeTask } from '$lib/server/safe';
+import { system, SystemAction } from '$lib/server/comment';
 
 // TODO: find out how to type these
 async function findTask<T extends Prisma.TaskInclude | undefined>(
@@ -76,7 +77,7 @@ export const actions: Actions = {
 		throw redirect(302, `/tasks/${params.id}#comment-${id}`);
 	},
 	async done({ locals, params, request }) {
-		const { project } = locals;
+		const { project, member } = locals;
 
 		const { done } = await form({ done: 'number' } as const, request);
 
@@ -92,7 +93,12 @@ export const actions: Actions = {
 			}
 		});
 
-		// TODO: Send system comment
+		await system(
+			project.id,
+			task.id,
+			done ? SystemAction.TASK_CLOSE : SystemAction.TASK_REOPEN,
+			member.id
+		);
 
 		throw redirect(302, `/tasks/${params.id}`);
 	},
@@ -107,7 +113,8 @@ export const actions: Actions = {
 			where: {
 				id: id,
 				authorId: member.id,
-				projectId: member.projectId
+				projectId: member.projectId,
+				system: false
 			}
 		});
 
@@ -125,16 +132,16 @@ export const actions: Actions = {
 			where: {
 				id: id,
 				authorId: member.id,
-				projectId: member.projectId
+				projectId: member.projectId,
+				system: false
 			}
 		});
 
 		throw redirect(302, `/tasks/${params.id}#comment-${id}`);
 	},
 
-	// TODO: send system message
 	async edit({ locals, params, request }) {
-		const { project } = locals;
+		const { project, member } = locals;
 
 		const { content } = await form({ content: 'string' } as const, request);
 
@@ -148,6 +155,9 @@ export const actions: Actions = {
 				},
 				data: { content }
 			});
+
+			await system(project.id, params.id, SystemAction.TASK_EDIT, member.id);
+
 			// eslint-disable-next-line no-empty
 		} catch (e) {}
 
@@ -172,7 +182,6 @@ export const actions: Actions = {
 		throw redirect(302, '/tasks');
 	},
 
-	// TODO: send system message
 	async assign({ locals, params }) {
 		const { project, member } = locals;
 
@@ -187,6 +196,9 @@ export const actions: Actions = {
 					projectId: project.id
 				}
 			});
+
+			await system(project.id, params.id, SystemAction.ASSIGN_SELF, member.id);
+
 			// eslint-disable-next-line no-empty
 		} catch (e) {}
 
@@ -208,6 +220,9 @@ export const actions: Actions = {
 					}
 				}
 			});
+
+			await system(project.id, params.id, SystemAction.UNASSIGN_SELF, member.id);
+
 			// eslint-disable-next-line no-empty
 		} catch (e) {}
 

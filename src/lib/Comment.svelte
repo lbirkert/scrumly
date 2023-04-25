@@ -10,6 +10,7 @@
 
 	import Editor from '$lib/Editor.svelte';
 	import NodeHeader from '$lib/NodeHeader.svelte';
+	import { SystemComment } from '$lib/system';
 
 	export let comment: SafeComment<'project', ''>;
 	export let member: Omit<SafeMember<'project', ''>, 'project'>;
@@ -22,45 +23,51 @@
 	}
 </script>
 
-<li>
-	<div id="comment-{comment.id}" />
-	{#if edit}
-		<NodeHeader>Edit Comment</NodeHeader>
-		<Editor
-			id={comment.id}
-			content={comment.content}
-			cancel_url="?#comment-{comment.id}"
-			action="?/comment_update"
-		/>
-	{:else}
-		<NodeHeader>
-			<span>
-				<Member member={comment.author} />
-				commented
-				<a title={comment.createdAt.toString()} href="#comment-{comment.id}">
-					{sinceShort(comment.createdAt)}
-				</a>
-			</span>
+{#if comment.system}
+	<SystemComment bind:comment />
+{:else}
+	<li>
+		<div id="comment-{comment.id}" />
+		{#if edit}
+			<NodeHeader>Edit Comment</NodeHeader>
+			<Editor
+				id={comment.id}
+				content={comment.content}
+				cancel_url="?#comment-{comment.id}"
+				action="?/comment_update"
+			/>
+		{:else}
+			<NodeHeader>
+				<span>
+					<Member member={comment.author} />
+					commented
+					<a title={comment.createdAt.toString()} href="#comment-{comment.id}">
+						{sinceShort(comment.createdAt)}
+					</a>
+				</span>
 
-			<label for="menu-{comment.id}">+</label>
-		</NodeHeader>
+				<label for="menu-{comment.id}">+</label>
+			</NodeHeader>
 
-		<input class="hide" type="checkbox" id="menu-{comment.id}" />
-		<menu>
-			<a class="button" href="#comment-{comment.id}" on:click|preventDefault={copy}>Copy link</a>
-			{#if comment.author.id === member.id}
-				<a class="button" style="--color: lightblue" href="?edit={comment.id}#comment-{comment.id}"
-					>Edit</a
-				>
-				<form method="POST" action="?/comment_delete" use:enhance>
-					<input class="hide" value={comment.id} name="id" />
-					<button style="--color: lightcoral">Delete</button>
-				</form>
-			{/if}
-		</menu>
-		<span><Markdown bind:source={comment.content} /></span>
-	{/if}
-</li>
+			<input class="hide" type="checkbox" id="menu-{comment.id}" />
+			<menu>
+				<a class="button" href="#comment-{comment.id}" on:click|preventDefault={copy}>Copy link</a>
+				{#if comment.author.id === member.id}
+					<a
+						class="button"
+						style="--color: lightblue"
+						href="?edit={comment.id}#comment-{comment.id}">Edit</a
+					>
+					<form method="POST" action="?/comment_delete" use:enhance>
+						<input class="hide" value={comment.id} name="id" />
+						<button style="--color: lightcoral">Delete</button>
+					</form>
+				{/if}
+			</menu>
+			<span><Markdown bind:source={comment.content} /></span>
+		{/if}
+	</li>
+{/if}
 
 <style>
 	li > div {

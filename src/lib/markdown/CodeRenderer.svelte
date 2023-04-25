@@ -53,6 +53,7 @@
 		border-radius: 5px;
 		border: 1px solid rgba(255, 255, 255, 0.3);
 		overflow-x: scroll;
+		scrollbar-width: thin;
 	}
 
 	code :global(span.line) {

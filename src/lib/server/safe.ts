@@ -159,6 +159,7 @@ export type SafeComment<A extends symbol | string, B extends symbol | string> = 
 	author: Omit<SafeMember<A, B>, A>;
 	content: string;
 	createdAt: Date;
+	system: boolean;
 };
 
 export type InputComment<A extends symbol | string, B extends symbol | string> = Comment & {
@@ -183,7 +184,8 @@ export function safeComment<
 		id: _comment.id,
 		author: safeMember(_comment.author),
 		content: _comment.content,
-		createdAt: _comment.createdAt
+		createdAt: _comment.createdAt,
+		system: _comment.system
 	} as SafeComment<A, B>;
 }
 

@@ -117,6 +117,7 @@
 		min-height: unset;
 		column-gap: 10px;
 		padding: 10px;
+		padding-bottom: 0;
 		flex: 1;
 	}
 
@@ -125,6 +126,7 @@
 		flex: 1;
 		border-radius: 10px;
 		padding: 5px;
+		padding-bottom: 0;
 		display: flex;
 		flex-direction: column;
 	}

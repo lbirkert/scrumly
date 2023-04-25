@@ -65,7 +65,7 @@
 <style>
 	header {
 		padding-bottom: 5px;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 		display: flex;
 		align-items: center;
 		justify-content: space-between;

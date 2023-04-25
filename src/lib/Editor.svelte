@@ -4,7 +4,7 @@
 	import { Markdown } from '$lib/markdown';
 
 	export let id: string | undefined = undefined;
-	export let content: string;
+	export let content = '';
 
 	export let cancel_url = '?';
 	export let action = '?/edit';
@@ -18,8 +18,8 @@
 	{/if}
 
 	<header class="showjs">
-		<button on:click|preventDefault={() => (preview = false)}>Write</button>
-		<button on:click|preventDefault={() => (preview = true)}>Preview</button>
+		<button class:active={!preview} on:click|preventDefault={() => (preview = false)}>Write</button>
+		<button class:active={preview} on:click|preventDefault={() => (preview = true)}>Preview</button>
 	</header>
 
 	{#if preview}
@@ -31,12 +31,19 @@
 	{/if}
 
 	<footer>
-		<a class="button" style="--color: lightcoral" href={cancel_url}>Cancel</a>
-		<button style="--color: lightgreen">Update</button>
+		<slot>
+			<a class="button" style="--color: lightcoral" href={cancel_url}>Cancel</a>
+			<button style="--color: lightgreen">Update</button>
+		</slot>
 	</footer>
 </form>
 
 <style>
+	.active {
+		background-color: white;
+		color: black;
+	}
+
 	textarea {
 		width: 100%;
 		margin-bottom: 5px;
@@ -54,8 +61,10 @@
 
 	div {
 		padding: 5px 10px;
-		border: 1px solid rgba(255, 255, 255, 0.7);
+		border: 1px solid rgba(255, 255, 255, 0.2);
 		border-radius: 4px;
 		margin-bottom: 5px;
+		background-color: #050505;
+		min-height: 80px;
 	}
 </style>

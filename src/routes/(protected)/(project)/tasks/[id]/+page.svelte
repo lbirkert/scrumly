@@ -11,6 +11,8 @@
 	import Task from '$lib/Task.svelte';
 
 	export let data: PageData;
+
+	let content: string;
 </script>
 
 <main>
@@ -55,25 +57,22 @@
 		<span class="spacer" />
 	{/if}
 
-	<form method="POST" action="?/comment" use:enhance>
-		<!-- TODO: write/preview -->
-		<textarea name="content" required />
-
-		<div>
-			{#if data.task.done}
-				<input class="hide" name="done" value="0" />
-				<button style="--color: white" formaction="?/done" type="submit" formnovalidate>
-					Reopen
-				</button>
-			{:else}
-				<input class="hide" name="done" value="1" />
-				<button style="--color: magenta" formaction="?/done" type="submit" formnovalidate>
-					Close
-				</button>
-			{/if}
-			<button style="--color: lightgreen">Comment</button>
-		</div>
-	</form>
+	<Editor action="?/comment" bind:content>
+		{#if data.task.done}
+			<input class="hide" name="done" value="0" />
+			<button style="--color: white" formaction="?/done" type="submit" formnovalidate>
+				Reopen
+			</button>
+		{:else}
+			<input class="hide" name="done" value="1" />
+			<button style="--color: magenta" formaction="?/done" type="submit" formnovalidate>
+				Close
+			</button>
+		{/if}
+		<button style="--color: lightgreen" on:click={() => setTimeout(() => (content = ''))}
+			>Comment</button
+		>
+	</Editor>
 
 	<span class="spacer" />
 
@@ -107,12 +106,6 @@
 	main > form {
 		margin-top: 40px;
 		margin-bottom: 40px;
-	}
-
-	form > div {
-		display: flex;
-		justify-content: end;
-		column-gap: 10px;
 	}
 
 	ul {
