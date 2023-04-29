@@ -170,6 +170,12 @@ main {
 	margin: auto;
 }
 
+@media only screen and (max-width: 450px) {
+	main {
+		padding: 30px 5px;
+	}
+}
+
 .dialog {
 	display: flex;
 	justify-content: center;
