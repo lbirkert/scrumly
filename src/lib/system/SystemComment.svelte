@@ -29,5 +29,6 @@
 		align-items: center;
 		flex-wrap: wrap;
 		column-gap: 10px;
+		font-size: 14px;
 	}
 </style>
