@@ -5,7 +5,6 @@
 <style>
 	header {
 		display: flex;
-		flex-wrap: wrap;
 		column-gap: 10px;
 		align-items: center;
 		border-bottom: var(--b1);

@@ -82,7 +82,8 @@
 	}
 
 	span {
-		display: inline-flex;
+		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
 		column-gap: 5px;
 		width: 100%;
