@@ -12,14 +12,14 @@ import { system, SystemAction } from '$lib/server/comment';
 
 // TODO: find out how to type these
 async function findTask<T extends Prisma.TaskInclude | undefined>(
-	params: { id: string },
+	id: string,
 	project: Project,
 	include: T
 ) {
 	const task = await prisma.task.findUnique({
 		where: {
 			id_projectId: {
-				id: params.id,
+				id,
 				projectId: project.id
 			}
 		},
@@ -37,7 +37,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 
 	return {
 		task: safeTask<'', 'project', '', '', 'project', ''>(
-			await findTask(params, project, {
+			await findTask(params.id, project, {
 				comments: {
 					include: {
 						author: true
@@ -57,7 +57,7 @@ export const actions: Actions = {
 	async comment({ locals, params, request }) {
 		const { project, member } = locals;
 
-		const task = await findTask(params, project, undefined);
+		const task = await findTask(params.id, project, undefined);
 
 		// TODO: Check member permissions
 
@@ -81,24 +81,26 @@ export const actions: Actions = {
 
 		const { done } = await form({ done: 'number' } as const, request);
 
-		const task = await findTask(params, project, undefined);
+		const task = await findTask(params.id, project, undefined);
 
-		await prisma.task.update({
-			data: { done: !!done },
-			where: {
-				id_projectId: {
-					id: task.id,
-					projectId: project.id
+		if (task.done != !!done) {
+			await prisma.task.update({
+				data: { done: !!done },
+				where: {
+					id_projectId: {
+						id: task.id,
+						projectId: project.id
+					}
 				}
-			}
-		});
+			});
 
-		await system(
-			project.id,
-			task.id,
-			done ? SystemAction.TASK_CLOSE : SystemAction.TASK_REOPEN,
-			member.id
-		);
+			await system(
+				project.id,
+				task.id,
+				done ? SystemAction.TASK_CLOSE : SystemAction.TASK_REOPEN,
+				member.id
+			);
+		}
 
 		throw redirect(302, `/tasks/${params.id}`);
 	},
@@ -186,7 +188,7 @@ export const actions: Actions = {
 		const { project, member } = locals;
 
 		// TODO: Check member permissions
-		const task = await findTask(params, project, undefined);
+		const task = await findTask(params.id, project, undefined);
 
 		try {
 			await prisma.assignee.create({
@@ -208,7 +210,7 @@ export const actions: Actions = {
 		const { project, member } = locals;
 
 		// TODO: Check member permissions
-		const task = await findTask(params, project, undefined);
+		const task = await findTask(params.id, project, undefined);
 
 		try {
 			await prisma.assignee.delete({
