@@ -76,7 +76,7 @@
 	}
 
 	li {
-		border: 1px solid rgba(255, 255, 255, 0.3);
+		border: var(--b1);
 		border-radius: 5px;
 		position: relative;
 	}
@@ -102,10 +102,10 @@
 		display: flex;
 		flex-direction: column;
 		row-gap: 5px;
-		border: 1px solid rgba(255, 255, 255, 0.3);
+		border: var(--b1);
 		border-radius: 0 0 10px 10px;
 		border-top: none;
-		background: #111;
+		background-color: var(--node-header);
 		position: absolute;
 		z-index: 10;
 		right: 0;

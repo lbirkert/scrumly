@@ -17,6 +17,8 @@ html {
 	--on-primary: black;
 	--b1: 1px solid rgba(255, 255, 255, 0.3);
 
+	--spacer: rgba(255, 255, 255, 0.2);
+
 	--input: #aaa;
 	--button: white;
 
@@ -34,8 +36,10 @@ html.light * {
 	--on-primary: white;
 	--b1: 1px solid rgba(0, 0, 0, 0.1);
 
+	--spacer: rgba(0, 0, 0, 0.1);
+
 	--input: #aaa;
-	--button: black;
+	--button: #555;
 
 	--node-header: white;
 
@@ -156,7 +160,7 @@ a {
 	display: inline-block;
 	width: 100%;
 	height: 3px;
-	background: rgba(255, 255, 255, 0.2);
+	background: var(--spacer);
 }
 
 main {
