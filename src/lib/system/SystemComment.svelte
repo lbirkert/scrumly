@@ -16,7 +16,7 @@
 		task_edit: TaskEdit,
 		task_close: TaskDone,
 		task_reopen: TaskDone
-	};
+	} as { [key: string]: any };
 </script>
 
 <li>
@@ -25,8 +25,9 @@
 
 <style>
 	li {
-		display: inline-flex;
+		display: flex;
 		align-items: center;
+		flex-wrap: wrap;
 		column-gap: 10px;
 	}
 </style>
