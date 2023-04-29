@@ -60,9 +60,7 @@
 	<Editor action="?/comment" bind:content>
 		{#if data.task.done}
 			<input class="hide" name="done" value="0" />
-			<button style="--color: white" formaction="?/done" type="submit" formnovalidate>
-				Reopen
-			</button>
+			<button formaction="?/done" type="submit" formnovalidate> Reopen </button>
 		{:else}
 			<input class="hide" name="done" value="1" />
 			<button style="--color: magenta" formaction="?/done" type="submit" formnovalidate>
