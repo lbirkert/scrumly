@@ -20,6 +20,7 @@ _NOTE: Use github and others if you can_
 1. You have got people who you rarely work with and do not have got a github account (or similar).
 2. You need a simple selfhostable alternative to larger services.
 3. You need single password authentification.
+4. You need a scrum system.
 
 <hr>
 
