@@ -16,8 +16,8 @@
 	img {
 		overflow: hidden;
 		border-radius: 100%;
-		background-color: #111;
-		border: 1px solid rgba(255, 255, 255, 0.3);
+		background-color: var(--node-header);
+		border: var(--b1);
 	}
 
 	img.s {
