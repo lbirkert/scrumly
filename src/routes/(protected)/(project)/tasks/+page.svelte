@@ -14,7 +14,11 @@
 
 <main>
 	<form>
-		<input name="q" placeholder="Search" value={$page.url.searchParams.get('q') || 'is:open'} />
+		<input
+			name="q"
+			placeholder="Search"
+			value={$page.url.searchParams.has('q') ? $page.url.searchParams.get('q') : 'is:open'}
+		/>
 		<a class="button" style="--color: lightgreen" href="/tasks/new"> New </a>
 	</form>
 

@@ -6,15 +6,14 @@ import { safeTask } from '$lib/server/safe';
 export const load: PageServerLoad = async ({ locals, url }) => {
 	const { project } = locals;
 
-	const search = url.searchParams.get('q') || 'is:open';
+	const search = url.searchParams.has('q') ? url.searchParams.get('q') || '' : 'is:open';
 
-	const doneState =
-		search.includes('is:open') || (search.includes('is:closed') ? false : undefined);
+	const done = search.includes('is:closed') || (search.includes('is:open') ? false : undefined);
 
 	const tasks = await prisma.task.findMany({
 		where: {
 			projectId: project.id,
-			done: doneState
+			done
 		},
 		include: {
 			assignees: {
