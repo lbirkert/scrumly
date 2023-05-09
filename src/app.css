@@ -9,6 +9,11 @@ html {
 	font-family: 'Fira Mono', sans-serif;
 }
 
+/* TODO: style chrome scrollbar */
+*::-webkit-scrollbar {
+	display: none;
+}
+
 :root {
 	--bg: black;
 	--fg: #aaa;
