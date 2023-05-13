@@ -7,7 +7,7 @@
 
 	export let data: PageData;
 
-	type Scrum = SafeScrum<'comments', 'project', '', '', '', ''>;
+	type Scrum = SafeScrum<'comments', '', '', ''>;
 
 	// TODO: make customizable
 	let columns = [
@@ -114,11 +114,9 @@
 		display: flex;
 		overflow-x: scroll;
 		overflow-y: hidden;
-		min-height: unset;
 		column-gap: 10px;
 		padding: 10px;
 		padding-bottom: 0;
-		flex: 1;
 	}
 
 	li {
@@ -132,8 +130,6 @@
 	}
 
 	div {
-		display: flex;
-		flex-direction: column;
 		height: calc(100vh - 42px);
 		overflow: hidden;
 	}

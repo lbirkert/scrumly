@@ -1,5 +1,5 @@
 <script lang="ts">
-	import TabBar from './TabBar.svelte';
+	import TabBar from '$lib/TabBar.svelte';
 
 	import { Member, type SafeMember } from '$lib/member';
 

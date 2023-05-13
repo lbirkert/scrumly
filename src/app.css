@@ -7,6 +7,8 @@ html {
 	padding: 0;
 	box-sizing: border-box;
 	font-family: 'Fira Mono', sans-serif;
+
+	scrollbar-width: thin;
 }
 
 /* TODO: style chrome scrollbar */

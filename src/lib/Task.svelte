@@ -3,7 +3,8 @@
 	import { Avatar } from '$lib/member';
 	import type { SafeTask } from '$lib/server/safe';
 
-	export let task: Omit<SafeTask<'project', '', '', 'project', ''>, 'comments'>;
+	export let task: Omit<SafeTask<'', '', ''>, 'comments'>;
+	export let url = `/tasks/${task.id}`;
 </script>
 
 <Markdown source={task.content} />
@@ -23,7 +24,7 @@
 		</ul>
 	{/if}
 
-	<a href="/tasks/{task.id}">View</a>
+	<a href={url}>View</a>
 
 	<slot />
 </footer>

@@ -12,7 +12,7 @@
 	export let id: number;
 	export let name: string;
 
-	export let scrums: SafeScrum<'comments', 'project', '', '', '', ''>[];
+	export let scrums: SafeScrum<'comments', '', '', ''>[];
 
 	export let dragLast: number;
 	export let dragFirst: number;
