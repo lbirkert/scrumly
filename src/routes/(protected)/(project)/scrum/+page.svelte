@@ -117,6 +117,7 @@
 		column-gap: 10px;
 		padding: 10px;
 		padding-bottom: 0;
+		flex: 1;
 	}
 
 	li {
@@ -132,5 +133,6 @@
 	div {
 		height: calc(100vh - 42px);
 		overflow: hidden;
+		display: flex;
 	}
 </style>
