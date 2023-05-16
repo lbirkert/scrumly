@@ -25,7 +25,6 @@
 
 	if (browser) {
 		theme.set(localStorage.getItem('theme') || 'dark');
-		console.log($theme);
 		theme.subscribe((t) => {
 			document.documentElement.className = t;
 			localStorage.setItem('theme', t);

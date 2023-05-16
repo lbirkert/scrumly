@@ -2,11 +2,17 @@
 	import SvelteMarkdown from 'svelte-markdown';
 	import HtmlRenderer from './HtmlRenderer.svelte';
 	import CodeRenderer from './CodeRenderer.svelte';
+	import ImageRenderer from './ImageRenderer.svelte';
 
 	export let source: string;
 </script>
 
-<span><SvelteMarkdown bind:source renderers={{ html: HtmlRenderer, code: CodeRenderer }} /></span>
+<span
+	><SvelteMarkdown
+		bind:source
+		renderers={{ html: HtmlRenderer, code: CodeRenderer, image: ImageRenderer }}
+	/></span
+>
 
 <style>
 	span {
