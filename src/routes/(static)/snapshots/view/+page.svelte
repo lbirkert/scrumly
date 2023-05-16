@@ -12,7 +12,7 @@
 			return false;
 		}
 
-		const hash = url.hash || '#';
+		const hash = url.hash || '#scrum';
 
 		return path.exact ? hash == path.pathname : hash.startsWith(path.pathname);
 	}
@@ -33,7 +33,7 @@
 
 <TabBar {paths} {active} />
 
-{#if $page.url.hash === '#scrum'}
+{#if $page.url.hash || '#scrum' === '#scrum'}
 	<Scrum scrums={data.scrums} />
 {:else if $page.url.hash.startsWith('#tasks/')}
 	<h1>kek</h1>
