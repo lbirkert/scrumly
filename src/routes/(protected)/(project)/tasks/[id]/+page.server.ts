@@ -190,7 +190,7 @@ export const actions: Actions = {
 		// TODO: Check member permissions
 		const task = await findTask(params.id, project, undefined);
 
-		const memberId = (await form({ memberId: '_string' } as const, request).memberId) || member.id;
+		const memberId = (await form({ memberId: '_string' } as const, request)).memberId || member.id;
 
 		if (member.role !== 0 && memberId !== member.id) {
 			throw error(400, 'You are not permitted to assign other people');
@@ -218,7 +218,7 @@ export const actions: Actions = {
 		// TODO: Check member permissions
 		const task = await findTask(params.id, project, undefined);
 
-		const memberId = (await form({ memberId: '_string' } as const, request).memberId) || member.id;
+		const memberId = (await form({ memberId: '_string' } as const, request)).memberId || member.id;
 
 		if (member.role !== 0 && memberId !== member.id) {
 			throw error(400, 'You are not permitted to unassign other people');
