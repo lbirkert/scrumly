@@ -205,7 +205,7 @@ export const actions: Actions = {
 				}
 			});
 
-			await system(project.id, params.id, SystemAction.ASSIGN_SELF, member.id);
+			await system(project.id, params.id, SystemAction.ASSIGN_SELF, memberId);
 
 			// eslint-disable-next-line no-empty
 		} catch (e) {}
@@ -235,7 +235,7 @@ export const actions: Actions = {
 				}
 			});
 
-			await system(project.id, params.id, SystemAction.UNASSIGN_SELF, member.id);
+			await system(project.id, params.id, SystemAction.UNASSIGN_SELF, memberId);
 
 			// eslint-disable-next-line no-empty
 		} catch (e) {}
