@@ -184,17 +184,23 @@ export const actions: Actions = {
 		throw redirect(302, '/tasks');
 	},
 
-	async assign({ locals, params }) {
+	async assign({ locals, params, request }) {
 		const { project, member } = locals;
 
 		// TODO: Check member permissions
 		const task = await findTask(params.id, project, undefined);
 
+		const memberId = (await form({ memberId: '_string' } as const, request).memberId) || member.id;
+
+		if (member.role !== 0 && memberId !== member.id) {
+			throw error(400, 'You are not permitted to assign other people');
+		}
+
 		try {
 			await prisma.assignee.create({
 				data: {
 					taskId: task.id,
-					memberId: member.id,
+					memberId: memberId,
 					projectId: project.id
 				}
 			});
@@ -206,18 +212,24 @@ export const actions: Actions = {
 
 		throw redirect(302, `/tasks/${params.id}`);
 	},
-	async unassign({ locals, params }) {
+	async unassign({ locals, params, request }) {
 		const { project, member } = locals;
 
 		// TODO: Check member permissions
 		const task = await findTask(params.id, project, undefined);
+
+		const memberId = (await form({ memberId: '_string' } as const, request).memberId) || member.id;
+
+		if (member.role !== 0 && memberId !== member.id) {
+			throw error(400, 'You are not permitted to unassign other people');
+		}
 
 		try {
 			await prisma.assignee.delete({
 				where: {
 					taskId_memberId_projectId: {
 						taskId: task.id,
-						memberId: member.id,
+						memberId: memberId,
 						projectId: project.id
 					}
 				}

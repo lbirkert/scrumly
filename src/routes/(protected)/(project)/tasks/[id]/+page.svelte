@@ -94,6 +94,15 @@
 			<button formaction="?/assign">Assign</button>
 		{/if}
 	</form>
+	{#if data.member.role === 0}
+		<form method="POST" use:enhance>
+			<span>
+				<input type="text" placeholder="memberId" name="memberId" />
+				<button formaction="?/assign">Assign</button>
+				<button formaction="?/unassign">Unassign</button>
+			</span>
+		</form>
+	{/if}
 </main>
 
 <style>
