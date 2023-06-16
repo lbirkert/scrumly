@@ -24,7 +24,9 @@
 		</ul>
 	{/if}
 
-	<a href={url}>View</a>
+	{#if url}
+		<a href={url}>View</a>
+	{/if}
 
 	<slot />
 </footer>

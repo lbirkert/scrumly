@@ -39,7 +39,7 @@
 							<div id="scrum-{scrum.id}" class="hide" />
 
 							{#if scrum.task}
-								<div><Task task={scrum.task} url="#" /></div>
+								<div><Task task={scrum.task} url="" /></div>
 							{:else}
 								<div><Markdown source={scrum.content || ''} /></div>
 							{/if}
