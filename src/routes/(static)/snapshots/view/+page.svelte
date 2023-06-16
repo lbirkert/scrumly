@@ -44,8 +44,4 @@
 
 <TabBar {paths} {active} />
 
-{#if $page.url.hash || '#scrum' === '#scrum'}
-	<Scrum scrums={snapshot.scrums} />
-{:else if $page.url.hash.startsWith('#tasks/')}
-	<h1>kek</h1>
-{/if}
+<Scrum scrums={snapshot.scrums} />

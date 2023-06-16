@@ -55,20 +55,22 @@
 	.main {
 		height: calc(100vh - 42px);
 		overflow: hidden;
-		padding: 0;
 	}
 
 	.main > ul {
 		display: flex;
+		justify-content: space-between;
 		overflow-x: scroll;
 		overflow-y: hidden;
 		height: 100%;
-		padding: 10px;
+		padding: 40px 30px;
 		padding-bottom: 0;
+		column-gap: 10px;
 	}
 
 	.main > ul > li {
-		min-width: 400px;
+		min-width: 350px;
+		max-width: 400px;
 		flex: 1;
 		border-radius: 10px;
 		padding: 5px;
@@ -82,7 +84,7 @@
 		padding: 10px 0;
 		flex-direction: column;
 		overflow-y: scroll;
-		row-gap: 10px;
+		row-gap: 15px;
 	}
 
 	.main > ul > li > ul > li {
@@ -92,8 +94,9 @@
 	}
 
 	header {
-		padding-bottom: 5px;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+		padding-bottom: 10px;
+		margin-bottom: 10px;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
