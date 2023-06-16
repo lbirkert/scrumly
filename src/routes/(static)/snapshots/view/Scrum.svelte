@@ -10,14 +10,18 @@
 
 	export let scrums: Scrum[];
 
-	const columns = [
+	let columns = [
 		{ name: 'Story' },
 		{ name: 'TODO' },
 		{ name: 'Doing' },
 		{ name: 'Done' }
 	] as unknown as { name: string; scrums: Scrum[] }[];
 
-	columns.forEach((c, i) => (c.scrums = scrums.filter((s) => s.column === i)));
+	$: {
+		columns.forEach((c, i) => (c.scrums = scrums.filter((s) => s.column === i)));
+		// Force update
+		columns = columns;
+	}
 </script>
 
 <SEO title="Scrum" />
@@ -35,7 +39,7 @@
 							<div id="scrum-{scrum.id}" class="hide" />
 
 							{#if scrum.task}
-								<div><Task task={scrum.task} url="#tasks/{scrum.task.id}" /></div>
+								<div><Task task={scrum.task} url="#" /></div>
 							{:else}
 								<div><Markdown source={scrum.content || ''} /></div>
 							{/if}
