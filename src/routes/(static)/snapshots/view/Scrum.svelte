@@ -53,7 +53,7 @@
 
 <style>
 	.main {
-		height: calc(100vh - 42px);
+		height: 100vh;
 		overflow: hidden;
 	}
 
