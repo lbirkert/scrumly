@@ -42,6 +42,8 @@
 	}
 </script>
 
-<TabBar {paths} {active} />
+{#if data.collection !== undefined}
+	<TabBar {paths} {active} />
+{/if}
 
 <Scrum scrums={snapshot.scrums} />
