@@ -1,4 +1,8 @@
-The simple teaming solution for [small teams](#usecases) written using [SvelteKit](https://kit.svelte.dev).
+<img src="https://raw.githubusercontent.com/lbirkert/scrumly/main/brand/logo_light.svg#gh-dark-mode-only" alt="Scrumly" width="400px"/>
+<img src="https://raw.githubusercontent.com/lbirkert/scrumly/main/brand/logo_dart.svg#gh-light-mode-only" alt="Scrumly" width="400px"/>
+
+
+Collaborate using SCRUM effectively!
 
 <hr>
 
@@ -11,16 +15,12 @@ _NOTE: Use github and others if you can_
 3. You need single password authentification.
 4. You need a scrum system.
 
-<hr>
-
 ## Requirements
 
 1. git
 2. nodejs
 3. openssl
-
-<hr>
-
+4. 
 ## Hosting
 
 ### Docker
@@ -29,42 +29,40 @@ Soon &trade;
 
 ### Manually
 
-1. Clone the repo: `git clone https://github.com/KekOnTheWorld/kotw-teams`
+1. Clone the repo: `git clone https://github.com/lbirkert/scrumly`
 2. Install the dependencies: `npm install`
 3. Copy `default.env` to `.env` and configure
 4. Setup the SQLite database: `npx prisma db push`
 5. Build: `npm run build`
 
-You can now run `kotw-teams` using the `run.sh` file.
+You can now run `scrumly` using the `run.sh` file.
 
 _Optional: Create systemd service_
 
-/etc/systemd/system/kotw-teams.service
+/etc/systemd/system/scrumly.service
 
 ```ini
 [Unit]
-Description=KOTW Teams
+Description=Scrumly Selfhosted
 
 [Service]
 Type=simple
-WorkingDirectory=/path/to/kotw-teams
-ExecStart=/bin/bash /path/to/kotw-teams/run.sh
+WorkingDirectory=/path/to/scrumly
+ExecStart=/bin/bash /path/to/scrumly/run.sh
 
 [Install]
 WantedBy=multi-user.target
 ```
 
 ```
-sudo systemctl enable kotw-teams.service
-sudo systemctl start kotw-teams.service
-sudo systemctl status kotw-teams.service
+sudo systemctl enable scrumly.service
+sudo systemctl start scrumly.service
+sudo systemctl status scrumly.service
 ```
-
-<hr>
 
 ## Contribution Guide
 
-1. Clone the repo: `git clone https://github.com/KekOnTheWorld/kotw-teams`
+1. Clone the repo: `git clone https://github.com/lbirkert/scrumly`
 
 _Instead of doing the following manually, you can run `setup.sh`_
 
@@ -80,12 +78,10 @@ _Instead of doing the following manually, you can run `setup.sh`_
 9. Check your code doesn't contain linting errors/warnings: `npm run lint`
 10. Commit & PR
 
-<hr>
-
 ## License
 
-`kotw-teams` is licensed under [MIT](https://github.com/KekOnTheWorld/kotw-teams/blob/main/LICENSE)
+`scrumly` is licensed under the [MIT License](https://github.com/lbirkert/scrumly/blob/main/LICENSE)
 
 <hr>
 
-&copy; 2023 KekOnTheWorld & Contributors
+&copy; 2024 Lucas Birkert - All Rights Reserved
