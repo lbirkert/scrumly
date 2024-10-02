@@ -4,7 +4,7 @@
 	export let themeColor = '#90EE90';
 	export let image: { url: string; alt: string } | undefined = undefined;
 
-	const pageTitle = `KOTW Teams | ${title}`;
+	const pageTitle = `Scrumly | ${title}`;
 </script>
 
 <svelte:head>

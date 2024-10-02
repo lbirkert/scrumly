@@ -3,6 +3,7 @@
 
 	import { browser } from '$app/environment';
 	import { enhance } from '$app/forms';
+	import Seo from '$lib/SEO.svelte';
 
 	export let form: ActionData;
 
@@ -13,6 +14,8 @@
 		};
 	}
 </script>
+
+<Seo title="Create new Project" />
 
 <main class="dialog">
 	{#if form?.login}

@@ -4,6 +4,7 @@ import { form } from '$lib/server/form';
 import { prisma } from '$lib/server/prisma';
 import { secret } from '$lib/server/secret';
 import { redirect } from '@sveltejs/kit';
+import { system, SystemAction } from '$lib/server/comment';
 
 export const actions: Actions = {
 	async text({ request, locals }) {
@@ -14,6 +15,7 @@ export const actions: Actions = {
 			request
 		);
 
+		// TODO: convert to data access layer
 		const { id } = await prisma.scrum.create({
 			data: {
 				id: secret(5),
@@ -30,7 +32,7 @@ export const actions: Actions = {
 		throw redirect(302, `/scrum#scrum-${id}`);
 	},
 	async task({ request, locals }) {
-		const { project } = locals;
+		const { project, member } = locals;
 
 		const { content, column } = await form(
 			{ content: 'string', column: 'number' } as const,
@@ -60,6 +62,8 @@ export const actions: Actions = {
 				column
 			}
 		});
+
+		await system(project.id, id, SystemAction.TASK_CREATE, member.id);
 
 		throw redirect(302, `/scrum#scrum-${id}`);
 	},
