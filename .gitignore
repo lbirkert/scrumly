@@ -16,4 +16,4 @@ run/
 
 
 bun.lockb
-*-lock.*
+yarn.lock
