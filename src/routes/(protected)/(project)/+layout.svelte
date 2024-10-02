@@ -11,9 +11,9 @@
 
 <footer>
 	<p>
-		Made with 💕 by Lucas Birkert
+		Made with <span style="color:red">♥</span>
 		<span> | </span>
-		&copy; 2023 KekOnTheWorld
+		&copy; 2024 Lucas Birkert
 	</p>
 </footer>
 
