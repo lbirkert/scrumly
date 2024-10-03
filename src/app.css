@@ -80,6 +80,16 @@ form label {
 	row-gap: 10px;
 	font-size: 18px;
 	color: var(--primary);
+	cursor: pointer;
+}
+
+form label.inline {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	color: var(--fg);
+	font-size: 16px;
+	column-gap: 1em;
 }
 
 button,

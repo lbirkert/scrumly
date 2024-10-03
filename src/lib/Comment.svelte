@@ -12,8 +12,8 @@
 	import NodeHeader from '$lib/NodeHeader.svelte';
 	import { SystemComment } from '$lib/system';
 
-	export let comment: SafeComment<'project', ''>;
-	export let member: Omit<SafeMember<'project', ''>, 'project'>;
+	export let comment: SafeComment<'project'>;
+	export let member: Omit<SafeMember, 'project'>;
 	export let edit: boolean;
 
 	function copy() {

@@ -7,7 +7,15 @@ export enum SystemAction {
 	TASK_CREATE = 'task_create',
 	TASK_EDIT = 'task_edit',
 	TASK_CLOSE = 'task_close',
-	TASK_REOPEN = 'task_reopen'
+	TASK_REOPEN = 'task_reopen',
+
+	// SCRUM_ASSIGN = 'scrum_assign',
+	// SCRUM_UNASSIGN = 'scrum_unassign',
+
+	SCRUM_STORY = 'scrum_story',
+	SCRUM_TODO = 'scrum_todo',
+	SCRUM_DOING = 'scrum_doing',
+	SCRUM_DONE = 'scrum_done'
 }
 
 export async function system(

@@ -9,19 +9,19 @@
 	<h1>Scrum</h1>
 
 	<details open>
-		<summary>Create text node</summary>
-		<form action="?/text" method="post" use:enhance>
-			<textarea name="content" required />
-			<input name="column" class="hide" value={column} />
-			<button style="--color: lightblue">Create Text</button>
-		</form>
-	</details>
-	<details open>
 		<summary>Create task node</summary>
 		<form action="?/task" method="post" use:enhance>
 			<textarea name="content" required />
 			<input name="column" class="hide" value={column} />
 			<button style="--color: yellow">Create Task</button>
+		</form>
+	</details>
+	<details open>
+		<summary>Create text node</summary>
+		<form action="?/text" method="post" use:enhance>
+			<textarea name="content" required />
+			<input name="column" class="hide" value={column} />
+			<button style="--color: lightblue">Create Text</button>
 		</form>
 	</details>
 	<details open>

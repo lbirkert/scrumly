@@ -39,7 +39,7 @@ export const actions: Actions = {
 			request
 		);
 
-		const { id } = await prisma.scrum.create({
+		const { id, taskId } = await prisma.scrum.create({
 			data: {
 				id: secret(5),
 				project: {
@@ -63,7 +63,7 @@ export const actions: Actions = {
 			}
 		});
 
-		await system(project.id, id, SystemAction.TASK_CREATE, member.id);
+		await system(project.id, taskId, SystemAction.TASK_CREATE, member.id);
 
 		throw redirect(302, `/scrum#scrum-${id}`);
 	},

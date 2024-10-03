@@ -36,7 +36,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 	const { project } = locals;
 
 	return {
-		task: safeTask<'', 'project', '', '', 'project', ''>(
+		task: safeTask(
 			await findTask(params.id, project, {
 				comments: {
 					include: {

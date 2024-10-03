@@ -5,6 +5,7 @@ import { safeScrum } from '$lib/server/safe';
 import { prisma } from '$lib/server/prisma';
 
 import { error, redirect } from '@sveltejs/kit';
+import { system, SystemAction } from '$lib/server/comment';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const { project } = locals;
@@ -28,15 +29,19 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	return {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		scrums: scrums.map((s) => safeScrum<'', 'comments', 'project', '', '', '', ''>(s!))
+		scrums: scrums.map((s) => safeScrum(s!))
 	};
 };
 
 export const actions: Actions = {
 	async move({ request, locals }) {
-		const { project } = locals;
+		const { project, member } = locals;
 
 		const { id, to } = await form({ id: 'string', to: 'number' } as const, request);
+
+		if (to > 3) {
+			throw error(400, 'Invalid request');
+		}
 
 		const scrum = await prisma.scrum.findUnique({
 			where: {
@@ -46,6 +51,17 @@ export const actions: Actions = {
 				}
 			}
 		});
+
+		// log a message if a task was assigned
+		if (scrum?.taskId != null) {
+			const actions = {
+				0: SystemAction.SCRUM_STORY,
+				1: SystemAction.SCRUM_TODO,
+				2: SystemAction.SCRUM_DOING,
+				3: SystemAction.SCRUM_DONE
+			} as { [key: number]: SystemAction };
+			await system(project.id, scrum?.taskId, actions[to], member.id);
+		}
 
 		if (!scrum) throw error(404, 'Not found');
 
@@ -64,9 +80,9 @@ export const actions: Actions = {
 	async delete({ request, locals }) {
 		const { project } = locals;
 
-		const { id } = await form({ id: 'string' } as const, request);
+		const { id, deep } = await form({ id: 'string', deep: 'bool' } as const, request);
 
-		await prisma.scrum.delete({
+		const { taskId } = await prisma.scrum.delete({
 			where: {
 				id_projectId: {
 					projectId: project.id,
@@ -74,6 +90,21 @@ export const actions: Actions = {
 				}
 			}
 		});
+
+		if (deep) {
+			if (taskId == null) {
+				throw Error('taskId is null');
+			}
+
+			await prisma.task.delete({
+				where: {
+					id_projectId: {
+						projectId: project.id,
+						id: taskId
+					}
+				}
+			});
+		}
 
 		throw redirect(302, '/scrum');
 	},

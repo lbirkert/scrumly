@@ -8,6 +8,7 @@
 	import { enhance } from '$app/forms';
 
 	import { page } from '$app/stores';
+	import Checkbox from '$lib/Checkbox.svelte';
 
 	export let id: number;
 	export let name: string;
@@ -39,6 +40,9 @@
 
 				<form method="POST" action="?/delete" use:enhance>
 					<h4>Are you sure?</h4>
+					<Checkbox className="inline" name="deep" checked={true}>
+						Also delete asigned task
+					</Checkbox>
 					<!-- TODO: add checkbox to delete task too -->
 					<input class="hide" name="id" value={scrum.id} />
 					<footer>

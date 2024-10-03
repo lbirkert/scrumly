@@ -6,6 +6,9 @@ type TypeNameToType = {
 	/// @deprecated
 	_string: string | undefined;
 
+	bool: boolean;
+	_bool: boolean | undefined;
+
 	text: string;
 	_text: string | undefined;
 	file: File;
@@ -48,9 +51,13 @@ export async function form<T extends Record<PropertyKey, keyof TypeNameToType>>(
 				} else {
 					p[field] = date;
 				}
+			} else if (type === 'bool') {
+				p[field] = value === 'on' || value === 'true';
 			} else {
 				p[field] = value;
 			}
+		} else if (type === 'bool') {
+			p[field] = false;
 		} else if (!optional) throw error(400, `Missing field ${field}`);
 
 		return p;

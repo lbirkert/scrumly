@@ -11,6 +11,7 @@
 
 	import { browser } from '$app/environment';
 	import { writable } from 'svelte/store';
+	import Checkbox from '$lib/Checkbox.svelte';
 
 	export let data: PageData;
 	export let form: ActionData;
@@ -109,16 +110,13 @@
 	<form>
 		<h2>Appereance Settings</h2>
 
-		<label class="showjs">
+		<Checkbox
+			className="showjs inline"
+			on:change={() => ($theme = $theme === 'light' ? 'dark' : 'light')}
+			checked={$theme === 'light'}
+		>
 			Experimental: Light theme
-
-			<input
-				class="showjs"
-				type="checkbox"
-				on:change={() => ($theme = $theme === 'light' ? 'dark' : 'light')}
-				checked={$theme === 'light'}
-			/>
-		</label>
+		</Checkbox>
 	</form>
 </main>
 
