@@ -1,5 +1,5 @@
 <img src="https://raw.githubusercontent.com/lbirkert/scrumly/main/brand/logo_light.svg#gh-dark-mode-only" alt="Scrumly" width="400px"/>
-<img src="https://raw.githubusercontent.com/lbirkert/scrumly/main/brand/logo_dart.svg#gh-light-mode-only" alt="Scrumly" width="400px"/>
+<img src="https://raw.githubusercontent.com/lbirkert/scrumly/main/brand/logo_dark.svg#gh-light-mode-only" alt="Scrumly" width="400px"/>
 
 
 Collaborate using SCRUM effectively!
